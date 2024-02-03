@@ -1,11 +1,11 @@
-import "./App.css";
+import Header from "./components/Header";
+import HomePage from "./components/HomePage";
 
 function App() {
   return (
-    <div className="App">
-      <div style={{ backgroundColor: "yellow" }}>
-        <img src="./logo.png" alt="logo" height={60} />
-      </div>
+    <div className="bg-gradient-to-r from-rose-100 to-teal-100 ">
+      <Header/>
+      <HomePage/>
     </div>
   );
 }
