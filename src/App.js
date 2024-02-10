@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="bg-gradient-to-r from-rose-100 to-teal-100 cursor-default">
+    <div className="cursor-default">
       <Header />
       <HomePage />
       <Footer />
