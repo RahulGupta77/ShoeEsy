@@ -29,10 +29,14 @@ const ImageCarousel = ({ images }) => {
 
   return (
     <Slider {...settings} className="m-0">
-      {images.map((image, id) => {
+      {images.map((image) => {
         return (
-          <div key={id} className={"overflow-hidden h-[30vh] bg-gray-300"}>
-            <img src={image} alt={id} className="h-full w-full object-cover" />
+          <div key={image} className={"overflow-hidden h-[30vh] bg-gray-300"}>
+            <img
+              src={image}
+              alt={"carousel-banner"}
+              className="h-full w-full object-cover"
+            />
           </div>
         );
       })}

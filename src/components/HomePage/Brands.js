@@ -5,17 +5,17 @@ import BrandsCarousel from "./BrandsCarousel";
 
 const Brands = () => {
   return (
-    <div className="mt-[4.5rem] flex flex-col items-center justify-center">
+    <div className="mt-[5rem] flex flex-col items-center justify-center">
       <div className="w-4/5 text-center">
         <TitleBanner title="MEN'S BRANDS" />
         <div className="mt-12 ">
-          <BrandsCarousel brands={MensBrands} gender="male" />
+          <BrandsCarousel brands={MensBrands} />
         </div>
       </div>
       <div className="w-4/5 mt-[4.5rem] text-center">
         <TitleBanner title="WOMEN'S BRANDS" />
         <div className="mt-12  ">
-          <BrandsCarousel brands={WomensBrands} gender="female" />
+          <BrandsCarousel brands={WomensBrands} />
         </div>
       </div>
     </div>

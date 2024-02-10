@@ -1,43 +1,33 @@
 import React from "react";
 
-const BrandComponent = ({ image, link, gender }) => {
-  const btnColorClass =
-    gender === "male"
-      ? "bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 "
-      : "bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600  ";
-
+const BrandComponent = ({ image, link }) => {
   return (
     <div className="h-[32vh] w-[38vw] bg-gray-300 flex justify-center items-center relative">
-
       <a
         href="#_"
         className="px-5 py-2.5 absolute top-3 left-4 rounded group  text-white font-semibold inline-block cursor-pointer"
       >
         <span
           className={
-            "absolute top-0 left-0 w-full h-full rounded opacity-50 filter blur-sm " +
-            btnColorClass
+            "absolute top-0 left-0 w-full h-full rounded opacity-50 filter blur-sm bg-[#e4344c]"
           }
         ></span>
         <span
           className={
-            "h-full w-full inset-0 absolute mt-0.5 ml-0.5 filter group-active:opacity-0 rounded opacity-50 " +
-            btnColorClass
+            "h-full w-full inset-0 absolute mt-0.5 ml-0.5 filter group-active:opacity-0 rounded opacity-50 bg-[#e4344c]"
           }
         ></span>
         <span
           className={
-            "absolute inset-0 w-full h-full transition-all duration-200 ease-out rounded shadow-xl  filter group-active:opacity-0 group-hover:blur-sm " +
-            btnColorClass
+            "absolute inset-0 w-full h-full transition-all duration-200 ease-out rounded shadow-xl  filter group-active:opacity-0 group-hover:blur-sm bg-[#e4344c]"
           }
         ></span>
         <span
           className={
-            "absolute inset-0 w-full h-full transition duration-200 ease-out rounded " +
-            btnColorClass
+            "absolute inset-0 w-full h-full transition duration-200 ease-out rounded bg-[#e4344c]"
           }
         ></span>
-        <span className="relative flex items-center justify-center">
+        <span className="relative flex items-center justify-center uppercase font-semibold tracking-wider">
           Shop Now
           <svg
             className="rtl:rotate-180 w-3.5 h-3.5 ms-2"

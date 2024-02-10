@@ -37,7 +37,16 @@ export const WomensBrands = [
 ];
 
 export const ExploreMoreImages = [
-  "https://i.postimg.cc/Gp21QXVT/exp-1.png",
+  "https://i.postimg.cc/K8VyjRwr/exp-1.jpg",
   "https://i.postimg.cc/wvRYK766/exp-2.png",
-  "https://i.postimg.cc/rpP2YS2n/exp-3.png",
+  "https://i.postimg.cc/ZqdzdJhk/exp-3.jpg",
 ];
+
+export const RegisterHeroImage =
+  "https://i.postimg.cc/9Q6MVp9P/register-page-image.jpg";
+
+export const LoginHeroImage =
+  "https://i.postimg.cc/pVCp8KNx/login-page-image.jpg";
+
+export const HeelHeroImage =
+  "https://i.postimg.cc/hvdjJDYY/heel-hero-image.jpg";

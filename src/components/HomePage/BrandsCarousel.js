@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import BrandComponent from "./BrandComponent";
 
-const BrandsCarousel = ({ brands, gender }) => {
+const BrandsCarousel = ({ brands }) => {
   let settings = {
     dots: true,
     infinite: true,
@@ -30,9 +30,9 @@ const BrandsCarousel = ({ brands, gender }) => {
 
   return (
     <Slider {...settings} className="m-0">
-      {brands.map((brand, id) => {
+      {brands.map((brand) => {
         return (
-          <BrandComponent image={brand} key={id} gender={gender} link="/" />
+          <BrandComponent image={brand} key={brand} link="/" />
         );
       })}
     </Slider>
