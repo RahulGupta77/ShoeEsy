@@ -1,10 +1,11 @@
 import React from "react";
-import ImageCarousel from "./ImageCarousel";
+import { Link } from "react-router-dom";
 import {
   HeroImage,
   LowerCarouselImages,
   UpperCarouselImages,
 } from "../../utilities/HomePageUtils";
+import ImageCarousel from "./ImageCarousel";
 
 const HeroImages = () => {
   return (
@@ -17,37 +18,36 @@ const HeroImages = () => {
           <h1 className="mb-2 text-2xl font-semibold leading-none tracking-wide text-gray-900 md:text-4xl lg:text-5xl dark:text-white ">
             Footwear Trend 2024
           </h1>
-          <a
-            href="#_"
-            className="mt-1 relative inline-block text-lg group cursor-pointer w-fit"
-          >
-            <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
-              <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-[#e4344c]"></span>
-              <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
-              <span className="relative flex justify-center items-center text-white uppercase font-bold tracking-widest">
-                Shop Now
-                <svg
-                  className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 14 10"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M1 5h12m0 0L9 1m4 4L9 9"
-                  />
-                </svg>
+          <Link to="/products">
+            <div className="mt-1 relative inline-block text-lg group cursor-pointer w-fit">
+              <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
+                <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-[#e4344c]"></span>
+                <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
+                <span className="relative flex justify-center items-center text-white uppercase font-bold tracking-wider">
+                  Shop Now
+                  <svg
+                    className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M1 5h12m0 0L9 1m4 4L9 9"
+                    />
+                  </svg>
+                </span>
               </span>
-            </span>
-            <span
-              className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
-              data-rounded="rounded-lg"
-            ></span>
-          </a>
+              <span
+                className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
+                data-rounded="rounded-lg"
+              ></span>
+            </div>
+          </Link>
         </div>
         <img
           src={HeroImage}

@@ -1,4 +1,4 @@
 node_modules
 backend
 .DS_Store
-src/utilities/*
+/src/utilities/*

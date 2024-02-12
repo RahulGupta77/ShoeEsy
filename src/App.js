@@ -1,16 +1,13 @@
 import Header from "./components/Header";
-import HomePage from "./components/HomePage/HomePage";
 import Footer from "./components/Footer";
-import Register from "./components/Register";
-import Login from "./components/Login";
+import { Outlet } from "react-router";
+
 
 function App() {
   return (
     <div className="cursor-default">
       <Header />
-      <HomePage />
-      {/* <Register /> */}
-      {/* <Login /> */}
+      <Outlet/>
       <Footer />
     </div>
   );
