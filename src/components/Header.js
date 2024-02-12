@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Button from "./Button";
 
 const Header = () => {
@@ -11,16 +11,16 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="w-2/6 border-2 h-1/2 border-gray-300 rounded-lg bg-white focus-within:border-gray-500 flex overflow-hidden ">
+      <div className="w-2/6 border-2 h-1/2 border-[#ff6478] rounded-lg focus-within:border-[#ec455b] focus-within:shadow-[4.0px_4.0px_4.0px_rgba(0,0,0,0.38)] flex overflow-hidden ">
         <input
-          className="w-11/12 h-full px-3 focus:outline-none bg-gray-50"
+          className="w-11/12 h-full px-3 focus:outline-none bg-[gray-50]"
           placeholder="Search with Ese..."
         />
-        <div className="w-1/12 bg-gray-200 p-1 cursor-pointer hover:bg-gray-300">
+        <div className="w-[10%] bg-[#ff6478]  p-1 cursor-pointer flex items-center justify-center hover:bg-[#de354c]">
           <img
-            src="./search-icon.png"
+            src="./search.png"
             alt="search-icon"
-            className="h-full w-full object-contain"
+            className="h-5/6 w-5/6 object-contain"
           />
         </div>
       </div>
@@ -31,22 +31,77 @@ const Header = () => {
       </div> */}
 
       <div className="flex items-center justify-center gap-x-10">
-        <div className="h-7 w-7 relative flex flex-col justify-center mt-2 items-center cursor-pointer">
-          <div className="h-5 w-5 bg-[#e4344c] rounded-full flex items-center justify-center font-extrabold text-white text-[12px] absolute -top-3 -right-2 animate-bounce">
+        <NavLink to="/" exact={"true"}>
+          {({ isActive }) => (
+            <div className="h-7 w-7 relative flex flex-col justify-center mt-2 items-center cursor-pointer">
+              <img
+                src="./home.png"
+                alt="home-page"
+                className="h-full w-full object-cover"
+              />
+              <div className="text-[12px] mt-[2px] font-semibold">Home</div>
+              {isActive && (
+                <div className="border-b-[3px] border-[#e4344c] w-[120%]"></div>
+              )}
+            </div>
+          )}
+        </NavLink>
+
+        <NavLink to="/products" exact={"true"}>
+          {({ isActive }) => (
+            <div className="h-7 w-7 relative flex flex-col justify-center mt-2 items-center cursor-pointer">
+              <img
+                src="./products.png"
+                alt="product-page"
+                className="h-full w-full object-cover"
+              />
+              <div className="text-[12px] mt-[1px] font-semibold">Shop</div>
+              {isActive && (
+                <div className="border-b-[3px] border-[#e4344c] w-[120%]"></div>
+              )}
+            </div>
+          )}
+        </NavLink>
+
+        <NavLink to="/cart" exact={"true"}>
+          {({ isActive }) => (
+            <div className="h-7 w-7 relative flex flex-col justify-center mt-2 items-center cursor-pointer">
+              {/* <div className="h-5 w-5 bg-[#e4344c] rounded-full flex items-center justify-center font-extrabold text-white text-[12px] absolute -top-3 -right-2 animate-bounce">
             0
-          </div>
-          <img
-            src="./bag-icon.png"
-            alt="cart-items"
-            className="h-full w-full object-cover"
-          />
-          <div className="text-[12px] mt-[2px] font-semibold">Bag</div>
-        </div>
+          </div> */}
+              <img
+                src="./bag.png"
+                alt="cart-items"
+                className="h-full w-full object-cover"
+              />
+              <div className="text-[12px] mt-[2px] font-semibold">Bag</div>
+              {isActive && (
+                <div className="border-b-[3px] border-[#e4344c] w-[120%]"></div>
+              )}
+            </div>
+          )}
+        </NavLink>
+
+        <NavLink to="/checkout" exact={"true"}>
+          {({ isActive }) => (
+            <div className="h-7 w-7 relative flex flex-col justify-center mt-2 items-center cursor-pointer">
+              <img
+                src="./checkout.png"
+                alt="checkout-page"
+                className="h-full w-full object-cover"
+              />
+              <div className="text-[12px] mt-[2px] font-semibold">Checkout</div>
+              {isActive && (
+                <div className="border-b-[3px] border-[#e4344c] w-[130%]"></div>
+              )}
+            </div>
+          )}
+        </NavLink>
 
         <div className="flex items-center justify-center gap-x-2">
           <div className="h-10 w-10 rounded-full">
             <img
-              src="./profile-icon.png"
+              src="./profile.png"
               alt="user-profile"
               className="h-full w-full object-cover"
             />

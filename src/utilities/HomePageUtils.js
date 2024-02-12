@@ -50,3 +50,5 @@ export const LoginHeroImage =
 
 export const HeelHeroImage =
   "https://i.postimg.cc/hvdjJDYY/heel-hero-image.jpg";
+
+export const ErrorPageImage = "https://i.postimg.cc/CLsKNhsm/nami.jpg";

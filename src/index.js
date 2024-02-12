@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import App from "./App";
+import ErrorPage from "./components/ErrorPage";
 import HomePage from "./components/HomePage/HomePage";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -31,9 +32,20 @@ const appRouter = createBrowserRouter([
         path: "/products",
         element: "Product Page ....",
       },
+      {
+        path: "/cart",
+        element: "Cart Page...",
+      },
+      {
+        path: "/checkout",
+        element: "Checkout Page...",
+      },
     ],
+    errorElement: <ErrorPage />,
   },
 ]);
+
+//note another way to nest checkout in cart is to use outlet and make checkout the children of cart
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<RouterProvider router={appRouter} />);
