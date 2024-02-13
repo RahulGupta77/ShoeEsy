@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import Cart from "./components/Cart";
 
 const appRouter = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: "Cart Page...",
+        element: <Cart/>,
       },
       {
         path: "/checkout",

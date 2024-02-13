@@ -15,7 +15,7 @@ const ErrorPage = () => {
           </div>
           <div className="mt-8 w-fit h-fit text-xl">
             <Button
-              text={"GET BACK TO SHOP"}
+              text={"get back to SHOP"}
               route={"./products"}
               needArrow={true}
               arrowDirection={"left"}
