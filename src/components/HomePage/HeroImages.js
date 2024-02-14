@@ -1,13 +1,16 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   HeroImage,
   LowerCarouselImages,
   UpperCarouselImages,
 } from "../../utilities/HomePageUtils";
+import { handleRouteChangeClick } from "../updateRouteInStore";
 import ImageCarousel from "./ImageCarousel";
 
 const HeroImages = () => {
+  const dispatch = useDispatch();
   return (
     <div className="w-full h-[60vh] flex">
       <div className="w-1/2 h-full bg-slate-200 relative">
@@ -19,7 +22,10 @@ const HeroImages = () => {
             Footwear Trend 2024
           </h1>
           <Link to="/products">
-            <div className="mt-1 relative inline-block text-lg group cursor-pointer w-fit">
+            <div
+              className="mt-1 relative inline-block text-lg group cursor-pointer w-fit"
+              onClick={() => handleRouteChangeClick("/products", dispatch)}
+            >
               <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
                 <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-[#ed4f7a]"></span>
                 <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>

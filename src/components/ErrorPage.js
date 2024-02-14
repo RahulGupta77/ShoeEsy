@@ -2,7 +2,7 @@ import React from "react";
 import { ErrorPageImage } from "../utilities/HomePageUtils";
 import Button from "./Button";
 import Footer from "./Footer";
-import Header from "./Header";
+import Header from "./Navbar/Header";
 
 const ErrorPage = () => {
   return (

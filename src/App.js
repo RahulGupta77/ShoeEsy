@@ -1,13 +1,12 @@
-import Header from "./components/Header";
+import Header from "./components/Navbar/Header"; 
 import Footer from "./components/Footer";
 import { Outlet } from "react-router";
-
 
 function App() {
   return (
     <div className="cursor-default">
       <Header />
-      <Outlet/>
+      <Outlet />
       <Footer />
     </div>
   );

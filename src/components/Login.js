@@ -1,9 +1,13 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { RegisterHeroImage } from "../utilities/HomePageUtils";
 import Button from "./Button";
+import { handleRouteChangeClick } from "./updateRouteInStore";
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   return (
     <div
       style={{ backgroundImage: `url(${RegisterHeroImage})` }}
@@ -29,7 +33,12 @@ const Login = () => {
         <div className="text-lg font-medium leading-none tracking-wide text-gray-900  mt-2 ">
           Don't have an account?{" "}
           <span className="text-[#ed4f7a] font-extrabold cursor-pointer">
-            <Link to="/register">Register Now</Link>
+            <Link
+              to="/register"
+              onClick={() => handleRouteChangeClick("/register", dispatch)}
+            >
+              Register Now
+            </Link>
           </span>
         </div>
       </div>

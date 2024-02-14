@@ -1,16 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import App from "./App";
+import About from "./components/About";
+import Cart from "./components/Cart";
 import ErrorPage from "./components/ErrorPage";
 import HomePage from "./components/HomePage/HomePage";
 import Login from "./components/Login";
+import store from "./components/redux/store";
 import Register from "./components/Register";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import Cart from "./components/Cart";
 
 const appRouter = createBrowserRouter([
   {
@@ -35,11 +38,15 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <Cart/>,
+        element: <Cart />,
       },
       {
         path: "/checkout",
         element: "Checkout Page...",
+      },
+      {
+        path: "/about",
+        element: <About />,
       },
     ],
     errorElement: <ErrorPage />,
@@ -49,7 +56,11 @@ const appRouter = createBrowserRouter([
 //note another way to nest checkout in cart is to use outlet and make checkout the children of cart
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={appRouter} />);
+root.render(
+  <Provider store={store}>
+    <RouterProvider router={appRouter} />
+  </Provider>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
