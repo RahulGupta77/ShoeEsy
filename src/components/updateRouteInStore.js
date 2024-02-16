@@ -1,4 +1,4 @@
-import { getCurrentRoute } from "./redux/navbarSlice";
+import { getCurrentRoute } from "./redux/navigationSlice";
 
 export const handleRouteChangeClick = (route, dispatch) => {
   dispatch(getCurrentRoute(route));

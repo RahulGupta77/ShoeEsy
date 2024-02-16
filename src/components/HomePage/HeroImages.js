@@ -15,10 +15,10 @@ const HeroImages = () => {
     <div className="w-full h-[60vh] flex">
       <div className="w-1/2 h-full bg-slate-200 relative">
         <div className="absolute mt-2 h-full flex flex-col justify-center items-center  w-full text-white z-10">
-          <div className="text-lg font-lg leading-none tracking-wide text-gray-900 md:text-xl lg:text-xl dark:text-white">
+          <div className="text-lg font-lg leading-none tracking-wide  md:text-xl lg:text-xl text-white">
             SALE OFFER 20% OFF THIS WEEK
           </div>
-          <h1 className="mb-2 text-2xl font-semibold leading-none tracking-wide text-gray-900 md:text-4xl lg:text-5xl dark:text-white ">
+          <h1 className="mb-2 text-2xl font-semibold leading-none tracking-wide  md:text-4xl lg:text-5xl text-white ">
             Footwear Trend 2024
           </h1>
           <Link to="/products">

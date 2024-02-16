@@ -55,6 +55,7 @@ const appRouter = createBrowserRouter([
 
 //note another way to nest checkout in cart is to use outlet and make checkout the children of cart
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>

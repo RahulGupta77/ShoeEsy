@@ -1,17 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const navbarSlice = createSlice({
-  name: "navbar",
+const navigationSlice = createSlice({
+  name: "navigation",
   initialState: {
     currentRoute: "./" + window.location.href.split("/").pop(),
   },
   reducers: {
     getCurrentRoute: (state, action) => {
       state.currentRoute = action.payload;
-      console.log(action.payload);
     },
   },
 });
 
-export const { getCurrentRoute } = navbarSlice.actions;
-export default navbarSlice.reducer;
+export const { getCurrentRoute } = navigationSlice.actions;
+export default navigationSlice.reducer;
