@@ -1,5 +1,5 @@
 import React from "react";
-import { ErrorPageImage } from "../utilities/HomePageUtils";
+import { ErrorPageImage } from "../utility/Image_Links";
 import Button from "./Button";
 import Footer from "./Footer";
 import Header from "./Navbar/Header";
