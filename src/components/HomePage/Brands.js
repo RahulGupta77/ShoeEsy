@@ -1,5 +1,5 @@
 import React from "react";
-import { MensBrands, WomensBrands } from "../../utilities/HomePageUtils";
+import { MensBrands, WomensBrands } from "../../utility/Image_Links";
 import TitleBanner from "./TitleBanner";
 import BrandsCarousel from "./BrandsCarousel";
 

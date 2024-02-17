@@ -5,7 +5,7 @@ import {
   HeroImage,
   LowerCarouselImages,
   UpperCarouselImages,
-} from "../../utilities/HomePageUtils";
+} from "../../utility/Image_Links";
 import { handleRouteChangeClick } from "../updateRouteInStore";
 import ImageCarousel from "./ImageCarousel";
 

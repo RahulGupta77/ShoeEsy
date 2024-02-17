@@ -1,5 +1,5 @@
 import React from "react";
-import { ShopForImages } from "../../utilities/HomePageUtils";
+import { ShopForImages } from "../../utility/Image_Links";
 import TitleBanner from "./TitleBanner";
 
 const ShopFor = () => {

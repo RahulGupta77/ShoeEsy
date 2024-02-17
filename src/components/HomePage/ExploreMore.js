@@ -1,5 +1,5 @@
 import React from "react";
-import { ExploreMoreImages } from "../../utilities/HomePageUtils";
+import { ExploreMoreImages } from "../../utility/Image_Links";
 import TitleBanner from "./TitleBanner";
 
 const ExploreMore = () => {

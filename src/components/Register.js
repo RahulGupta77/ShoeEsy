@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { backendConfig } from "../config";
-import { RegisterHeroImage } from "../utilities/HomePageUtils";
+import { RegisterHeroImage } from "../utility/Image_Links";
 import { handleRouteChangeClick } from "./updateRouteInStore";
 
 const Register = () => {

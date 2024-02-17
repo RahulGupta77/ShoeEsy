@@ -1,5 +1,5 @@
 import React from "react";
-import { OfflinePageImage } from "../utilities/HomePageUtils";
+import { OfflinePageImage } from "../utility/Image_Links";
 
 const OfflinePage = ({ onlineStatus }) => {
   return (
