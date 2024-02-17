@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick.css";
 import App from "./App";
 import About from "./components/About";
 import Cart from "./components/Cart";
+import Checkout from "./components/CheckoutPage/Checkout";
 import ErrorPage from "./components/ErrorPage";
 import HomePage from "./components/HomePage/HomePage";
 import Login from "./components/Login";
@@ -42,7 +43,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/checkout",
-        element: "Checkout Page...",
+        element: <Checkout />,
       },
       {
         path: "/about",
@@ -54,7 +55,6 @@ const appRouter = createBrowserRouter([
 ]);
 
 //note another way to nest checkout in cart is to use outlet and make checkout the children of cart
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
