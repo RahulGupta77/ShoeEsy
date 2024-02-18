@@ -8,7 +8,7 @@ import App from "./App";
 import About from "./components/About";
 import Cart from "./components/Cart";
 import Checkout from "./components/CheckoutPage/Checkout";
-import ErrorPage from "./components/ErrorPage";
+import ErrorPage from "./miscellaneousPages/ErrorPage";
 import HomePage from "./components/HomePage/HomePage";
 import Login from "./components/Login";
 import store from "./components/redux/store";

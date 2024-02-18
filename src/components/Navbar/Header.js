@@ -142,7 +142,7 @@ const Header = () => {
                       </svg>
                     </Link>
                     {showLogoutText && (
-                      <span className="absolute  left-0 font-bold bg-white text-[#ed4f7a] px-2 py-1  rounded-l-xl tracking-wider border-2 border-[#ed4f7a] rounded-tr-xl text-sm z-50">
+                      <span className="absolute  left-3 font-bold bg-white text-[#ed4f7a] px-2 py-1  rounded-l-xl tracking-wider border-2 border-[#ed4f7a] rounded-tr-xl text-sm z-50">
                         logout
                       </span>
                     )}

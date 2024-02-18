@@ -3,28 +3,29 @@ import {
   PencilSquareIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/24/solid";
-import { Button, Step, Stepper, Typography } from "@material-tailwind/react";
+import { Step, Stepper, Typography } from "@material-tailwind/react";
 import React, { useState } from "react";
-import BagCheckout from "./BagCheckout";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import ProtectedRoute from "../../miscellaneousPages/ProtectedRoute";
 import AddressCheckout from "./AddressCheckout";
+import BagCheckout from "./BagCheckout";
 import PaymentCheckout from "./PaymentCheckout";
 
 const Checkout = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [isLastStep, setIsLastStep] = useState(false);
-  const [isFirstStep, setIsFirstStep] = useState(false);
 
-  const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
-  const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
+  const isLoggedIn = useSelector((store) => store.userDetails.isLoggedIn);
+
+  if (!isLoggedIn) {
+    return <ProtectedRoute />;
+  }
+
+  const handleNext = () => setActiveStep((cur) => cur + 1);
 
   return (
     <div className="w-full relative px-24 py-4 mt-5 flex flex-col items-center">
-      <Stepper
-        activeStep={activeStep}
-        isLastStep={(value) => setIsLastStep(value)}
-        isFirstStep={(value) => setIsFirstStep(value)}
-        className="w-[50vw]"
-      >
+      <Stepper activeStep={activeStep} className="w-[50vw]">
         <Step className="cursor-pointer " onClick={() => setActiveStep(0)}>
           <ShoppingBagIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
@@ -37,7 +38,16 @@ const Checkout = () => {
           </div>
         </Step>
 
-        <Step className="cursor-pointer " onClick={() => setActiveStep(1)}>
+        <Step
+          className="cursor-pointer "
+          onClick={() => {
+            if (activeStep !== 0) {
+              setActiveStep(1);
+            } else {
+              toast.error("Place an order to continue!!");
+            }
+          }}
+        >
           <PencilSquareIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
@@ -49,7 +59,16 @@ const Checkout = () => {
           </div>
         </Step>
 
-        <Step className="cursor-pointer " onClick={() => setActiveStep(2)}>
+        <Step
+          className="cursor-pointer "
+          onClick={() => {
+            if (activeStep === 0) {
+              toast.error("Place an order to continue!!");
+            } else if (activeStep === 1) {
+              toast.error("Set Address to continue!!");
+            }
+          }}
+        >
           <BanknotesIcon className="h-5 w-5" />
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography
@@ -63,19 +82,19 @@ const Checkout = () => {
       </Stepper>
 
       {activeStep === 0 && (
-        <div className="mt-16 z-30 min-h-[70vh]  w-[70vw] text-black bg-green-300">
+        <div className="mt-16 z-30 min-h-[70vh]  w-[70vw] text-black border-2">
           <BagCheckout handleNext={handleNext} />
         </div>
       )}
 
       {activeStep === 1 && (
-        <div className="mt-16 z-30 min-h-[70vh]  w-[70vw] text-black bg-green-300">
+        <div className="mt-16 z-30 min-h-[70vh]  w-[70vw] text-black border-2">
           <AddressCheckout handleNext={handleNext} />
         </div>
       )}
 
       {activeStep === 2 && (
-        <div className="mt-16 z-30 min-h-[70vh]  w-[70vw] text-black bg-green-300">
+        <div className="mt-16 z-30 min-h-[70vh]  w-[70vw] text-black border-2">
           <PaymentCheckout />
         </div>
       )}

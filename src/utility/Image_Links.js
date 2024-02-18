@@ -51,6 +51,6 @@ export const LoginHeroImage =
 export const HeelHeroImage =
   "https://i.postimg.cc/hvdjJDYY/heel-hero-image.jpg";
 
-export const ErrorPageImage = "https://i.postimg.cc/CLsKNhsm/nami.jpg";
+export const CryingNamiImage = "https://i.postimg.cc/B6FmRywq/crying-nami.gif";
 
-export const OfflinePageImage = "https://i.postimg.cc/Vk1hHd2P/luffy.jpg";
+

@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 import Footer from "./components/Footer";
 import Header from "./components/Navbar/Header";
 import useOnlineStatus from "./customHooks/useOnlineStatus";
-import OfflinePage from "./components/OfflinePage";
+import OfflinePage from "./miscellaneousPages/OfflinePage";
 import { useSelector } from "react-redux";
 
 function App() {

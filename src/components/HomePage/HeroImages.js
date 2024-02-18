@@ -65,7 +65,7 @@ const HeroImages = () => {
         <div>
           <ImageCarousel images={UpperCarouselImages} />
         </div>
-        <div className="-mt-1.5">
+        <div className="-mt-[7px]">
           <ImageCarousel images={LowerCarouselImages} />
         </div>
       </div>
