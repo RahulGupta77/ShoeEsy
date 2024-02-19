@@ -44,7 +44,7 @@ const Login = () => {
       handleRouteChangeClick("/", dispatch);
       setLoading(false);
       navigate("/");
-      dispatch(toggleLoginStatus());
+      dispatch(toggleLoginStatus(true));
     } catch (error) {
       toast.error(error.message);
       setLoading(false);

@@ -2,19 +2,31 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import App from "./App";
 import About from "./components/About";
 import Cart from "./components/Cart";
 import Checkout from "./components/CheckoutPage/Checkout";
-import ErrorPage from "./miscellaneousPages/ErrorPage";
 import HomePage from "./components/HomePage/HomePage";
 import Login from "./components/Login";
+import ProductPage from "./components/ProductsPage/ProductPage";
 import store from "./components/redux/store";
 import Register from "./components/Register";
 import "./index.css";
+import ErrorPage from "./miscellaneousPages/ErrorPage";
 import reportWebVitals from "./reportWebVitals";
+
+let persistor = persistStore(store);
+
+// const clearLocalStorage = ()=>{
+//   persistor.pause();
+//   persistor.flush().then(() => {
+//     return persistor.purge();
+//   });
+// }
 
 const appRouter = createBrowserRouter([
   {
@@ -35,7 +47,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/products",
-        element: "Product Page ....",
+        element: <ProductPage />,
       },
       {
         path: "/cart",
@@ -59,7 +71,9 @@ const appRouter = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <RouterProvider router={appRouter} />
+    <PersistGate persistor={persistor}>
+      <RouterProvider router={appRouter} />
+    </PersistGate>
   </Provider>
 );
 

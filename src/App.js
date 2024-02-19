@@ -4,12 +4,12 @@ import Footer from "./components/Footer";
 import Header from "./components/Navbar/Header";
 import useOnlineStatus from "./customHooks/useOnlineStatus";
 import OfflinePage from "./miscellaneousPages/OfflinePage";
-import { useSelector } from "react-redux";
 
 function App() {
   const onlineStatus = useOnlineStatus();
-  const userInfo = useSelector(store=> store.userDetails.userInfo)
-  console.log(userInfo);
+  // const isLoggedIn = useSelector((store) => store.userDetails.isLoggedIn);
+  // console.log(isLoggedIn)
+
   //why redux data gets refreshed when going to the wrong route
   return (
     <div className="cursor-default">

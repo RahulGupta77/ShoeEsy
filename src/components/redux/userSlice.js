@@ -11,8 +11,8 @@ const userSlice = createSlice({
     },
   },
   reducers: {
-    toggleLoginStatus: (state) => {
-      state.isLoggedIn = !state.isLoggedIn;
+    toggleLoginStatus: (state, actions) => {
+      state.isLoggedIn = actions.payload;
     },
     updateUserDetails: (state, actions) => {
       state.userInfo.username = actions.payload.username;

@@ -18,6 +18,19 @@ const Header = () => {
   const currentRouteName = currentRoute.split("/").pop();
   const onlineStatus = useOnlineStatus();
 
+  const logoutHandler = () => {
+    handleRouteChangeClick("./login", dispatch);
+    dispatch(
+      updateUserDetails({
+        username: "",
+        token: "",
+        balance: 0,
+      })
+    );
+    dispatch(toggleLoginStatus(false));
+    setShowLogoutText(false);
+  };
+
   return (
     <div className="sticky top-0 z-50 h-[85px] bg-white flex items-center justify-between px-5 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
       <div className="h-3/4 w-[200px] cursor-pointer ">
@@ -112,16 +125,7 @@ const Header = () => {
                     <Link
                       to="./login"
                       onClick={() => {
-                        handleRouteChangeClick("./login", dispatch);
-                        dispatch(
-                          updateUserDetails({
-                            username: "",
-                            token: "",
-                            balance: 0,
-                          })
-                        );
-                        dispatch(toggleLoginStatus());
-                        setShowLogoutText(false);
+                        logoutHandler();
                       }}
                       onMouseOver={() => setShowLogoutText(true)}
                       onMouseOut={() => setShowLogoutText(false)}
