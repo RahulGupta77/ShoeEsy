@@ -7,7 +7,7 @@ import Card, {
 
 const CardPlaceHolder = () => {
   return (
-    <Card className="w-[18rem] h-[25rem] animate-pulse">
+    <Card className="w-[19rem] h-[25rem] animate-pulse">
       <CardHeader
         shadow={false}
         floated={false}

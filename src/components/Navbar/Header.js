@@ -32,7 +32,7 @@ const Header = () => {
   };
 
   return (
-    <div className="sticky top-0 z-50 h-[85px] bg-white flex items-center justify-between px-5 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+    <div className="sticky top-0 z-50 h-[85px] bg-[rgba(255,255,255,0.8)]  backdrop-blur-2xl flex items-center justify-between px-5 shadow-md">
       <div className="h-3/4 w-[200px] cursor-pointer ">
         <Link to="/" onClick={() => handleRouteChangeClick("/", dispatch)}>
           <img src="./logo.png" alt="brand-logo" className="h-full" />
@@ -146,7 +146,7 @@ const Header = () => {
                       </svg>
                     </Link>
                     {showLogoutText && (
-                      <span className="absolute  left-3 font-bold bg-white text-[#ed4f7a] px-2 py-1  rounded-l-xl tracking-wider border-2 border-[#ed4f7a] rounded-tr-xl text-sm z-50">
+                      <span className="absolute -left-2 font-bold bg-white text-[#ed4f7a] px-2 py-1  rounded-l-xl tracking-wider border-2 border-[#ed4f7a] rounded-tr-xl text-sm z-50">
                         logout
                       </span>
                     )}
