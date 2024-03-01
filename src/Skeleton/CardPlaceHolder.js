@@ -11,7 +11,7 @@ const CardPlaceHolder = () => {
       <CardHeader
         shadow={false}
         floated={false}
-        className="relative grid h-[22rem] place-items-center bg-gray-300"
+        className="relative grid h-[22rem] place-items-center bg-[rgb(210,210,210)]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
