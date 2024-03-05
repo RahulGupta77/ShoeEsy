@@ -122,34 +122,36 @@ const Header = () => {
                     >
                       {userName}
                     </Link>
-                    <Link
-                      to="./login"
-                      onClick={() => {
-                        logoutHandler();
-                      }}
-                      onMouseOver={() => setShowLogoutText(true)}
-                      onMouseOut={() => setShowLogoutText(false)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
+                    <div className="relative">
+                      <Link
+                        to="./login"
+                        onClick={() => {
+                          logoutHandler();
+                        }}
+                        onMouseOver={() => setShowLogoutText(true)}
+                        onMouseOut={() => setShowLogoutText(false)}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"
-                        />
-                      </svg>
-                    </Link>
-                    {showLogoutText && (
-                      <span className="absolute -left-2 font-bold bg-white text-[#ed4f7a] px-2 py-1  rounded-l-xl tracking-wider border-2 border-[#ed4f7a] rounded-tr-xl text-sm z-50">
-                        logout
-                      </span>
-                    )}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"
+                          />
+                        </svg>
+                      </Link>
+                      {showLogoutText && (
+                        <span className="absolute -left-[72px] -top-2 font-bold bg-white text-[#ed4f7a] px-2 py-1  rounded-l-xl tracking-wider border-2 border-[#ed4f7a] rounded-tr-xl text-sm z-50">
+                          logout
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </>

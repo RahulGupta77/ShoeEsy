@@ -1,0 +1,31 @@
+import { Rating, Typography } from "@material-tailwind/react";
+import React from "react";
+
+const RatingFilter = () => {
+  const ratings = [4, 3, 2, 1];
+
+  return (
+    <div className="min-h-32 pt-8 pb-5 px-6 border-b-2">
+      <Typography
+        color="blue-gray"
+        className="font-extrabold uppercase text-sm"
+      >
+        Customer Ratings
+      </Typography>
+
+      <div className="mt-5 flex flex-col">
+        {ratings.map((rating) => (
+          <div
+            className="flex my-1 items-center gap-1 cursor-pointer text-[#263228] hover:text-[#f8c145] "
+            key={rating + "up"}
+          >
+            <Rating value={rating} readonly />
+            <div className="font-bold text-sm">& Up</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default RatingFilter;

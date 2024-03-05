@@ -13,12 +13,12 @@ const ShopFor = () => {
             return (
               <div
                 key={image}
-                className="h-[45vh] w-[25vw] overflow-hidden rounded-xl bg-gray-300"
+                className="h-[44vh] w-[25vw] overflow-hidden rounded-xl bg-gray-300"
               >
                 <img
                   src={image}
                   alt="Shop for banner"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-fill"
                 />
               </div>
             );
