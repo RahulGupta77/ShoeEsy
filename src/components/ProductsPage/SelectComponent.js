@@ -1,8 +1,11 @@
 import { Option, Select } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateSortBy } from "../redux/filterSlice";
 
 const SelectComponent = () => {
-    const [selectedOption, setSelectedOption] = useState("recommended");
+  const { sortBy } = useSelector((store) => store.productFilter);
+  const dispatch = useDispatch();
 
   return (
     <div className="w-60">
@@ -11,8 +14,8 @@ const SelectComponent = () => {
         size="lg"
         label="Sort By"
         className="text-[#394b53] font-semibold tracking-wide"
-        onChange={(value) => setSelectedOption(value)}
-        value={selectedOption}
+        onChange={(value) => dispatch(updateSortBy(value))}
+        value={sortBy}
       >
         <Option value="recommended" className="font-semibold">
           Recommended

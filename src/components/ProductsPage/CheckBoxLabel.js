@@ -1,13 +1,14 @@
 import { Checkbox, Typography } from "@material-tailwind/react";
 import React from "react";
 
-const CheckBoxLabel = ({ label, method }) => {
+const CheckBoxLabel = ({ label, isTrue, handleBrandCheckClick }) => {
   return (
     <Checkbox
       id={label}
       value={label}
-      onChange={method}
+      onChange={() => handleBrandCheckClick(label)}
       color="pink"
+      checked={isTrue}
       label={
         <div>
           <Typography color="blue-gray" className="font-bold text-sm">

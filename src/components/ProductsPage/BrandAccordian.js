@@ -5,7 +5,12 @@ import {
 } from "@material-tailwind/react";
 import React from "react";
 
+import { useDispatch, useSelector } from "react-redux";
 import { MEN_BRANDS, WOMEN_BRANDS } from "../../utility/brands";
+import {
+  updateBrandAccordianState,
+  updateCategoryBrandFilter,
+} from "../redux/filterSlice";
 import CheckBoxLabel from "./CheckBoxLabel";
 
 function Icon({ id, open }) {
@@ -30,42 +35,64 @@ function Icon({ id, open }) {
 }
 
 export function BrandAccordian() {
-  const [open, setOpen] = React.useState(0);
+  const dispatch = useDispatch();
+  const { categoryAndBrandFilter, brandAccordianState } = useSelector(
+    (store) => store.productFilter
+  );
 
-  const handleOpen = (value) => setOpen(open === value ? 0 : value);
+  const handleBrandCheckClick = (brand) => {
+    dispatch(updateCategoryBrandFilter(brand));
+  };
 
   return (
     <>
-      <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
+      <Accordion
+        open={brandAccordianState[0]}
+        icon={<Icon id={1} open={brandAccordianState[0] && 1} />}
+      >
         <AccordionHeader
           className="text-sm font-bold"
-          onClick={() => handleOpen(1)}
+          onClick={() =>
+            dispatch(updateBrandAccordianState([0, !brandAccordianState[0]]))
+          }
         >
           Men
         </AccordionHeader>
         <AccordionBody>
           <div className="mt-1 flex flex-col">
             {MEN_BRANDS.map((brand) => (
-              <CheckBoxLabel key={brand} label={brand} />
+              <CheckBoxLabel
+                key={brand}
+                label={brand}
+                isTrue={categoryAndBrandFilter.indexOf(brand) !== -1}
+                handleBrandCheckClick={handleBrandCheckClick}
+              />
             ))}
           </div>
         </AccordionBody>
       </Accordion>
       <Accordion
         className="mt-3"
-        open={open === 2}
-        icon={<Icon id={2} open={open} />}
+        open={brandAccordianState[1]}
+        icon={<Icon id={2} open={brandAccordianState[1] && 2} />}
       >
         <AccordionHeader
           className="text-sm font-bold"
-          onClick={() => handleOpen(2)}
+          onClick={() =>
+            dispatch(updateBrandAccordianState([1, !brandAccordianState[1]]))
+          }
         >
           Women
         </AccordionHeader>
         <AccordionBody>
           <div className="className=mt-1 flex flex-col">
             {WOMEN_BRANDS.map((brand) => (
-              <CheckBoxLabel key={brand} label={brand} />
+              <CheckBoxLabel
+                key={brand}
+                label={brand}
+                isTrue={categoryAndBrandFilter.indexOf(brand) !== -1}
+                handleBrandCheckClick={handleBrandCheckClick}
+              />
             ))}
           </div>
         </AccordionBody>
