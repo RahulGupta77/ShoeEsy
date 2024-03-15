@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import ReactSlider from "react-slider";
 import styled from "styled-components";
-import { updatePriceFilter } from "../redux/filterSlice";
+import { updatePriceFilter } from "../../redux/filterSlice";
 
 const StyledSlider = styled(ReactSlider)`
   width: 100%;
@@ -60,7 +60,6 @@ const PriceFilter = () => {
     setCurrentValue([...finalPrice]);
     setInputValue([finalPrice[0] + "", finalPrice[1] + ""]);
   }, [stringi, finalPrice]);
-
 
   const handleInputPrice = (e, idx) => {
     const newArr = [...inputValue];

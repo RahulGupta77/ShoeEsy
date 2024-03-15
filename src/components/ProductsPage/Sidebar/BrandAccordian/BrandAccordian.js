@@ -6,11 +6,11 @@ import {
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { MEN_BRANDS, WOMEN_BRANDS } from "../../utility/brands";
+import { MEN_BRANDS, WOMEN_BRANDS } from "../../../../utility/brands";
 import {
   updateBrandAccordianState,
   updateCategoryBrandFilter,
-} from "../redux/filterSlice";
+} from "../../../redux/filterSlice";
 import CheckBoxLabel from "./CheckBoxLabel";
 
 function Icon({ id, open }) {

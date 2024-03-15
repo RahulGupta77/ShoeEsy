@@ -13,7 +13,7 @@ const BrandFilter = () => {
       </Typography>
 
       <div className="mt-2 flex flex-col">
-        <BrandAccordian  />
+        <BrandAccordian />
       </div>
     </div>
   );

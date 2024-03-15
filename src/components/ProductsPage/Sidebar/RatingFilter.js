@@ -1,7 +1,7 @@
 import { Rating, Typography } from "@material-tailwind/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCurrentRating } from "../redux/filterSlice";
+import { updateCurrentRating } from "../../redux/filterSlice";
 
 const RatingFilter = () => {
   const dispatch = useDispatch();

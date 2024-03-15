@@ -7,11 +7,11 @@ import Card, {
 
 const CardPlaceHolder = () => {
   return (
-    <Card className="w-[19rem] h-[25rem] animate-pulse">
+    <Card className="w-[15rem] h-[24rem] animate-pulse">
       <CardHeader
         shadow={false}
         floated={false}
-        className="relative grid h-[22rem] place-items-center bg-[rgb(210,210,210)]"
+        className="relative grid h-[22rem] place-items-center bg-[rgb(200,200,200)]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -32,21 +32,21 @@ const CardPlaceHolder = () => {
         <Typography
           as="div"
           variant="h1"
-          className="mb-2 h-4 w-[12rem] rounded-full bg-gray-300"
+          className="mb-2 h-4 w-[6rem] rounded-full bg-[rgb(200,200,200)]"
         >
           &nbsp;
         </Typography>
         <Typography
           as="div"
           variant="paragraph"
-          className="mb-2 h-2 w-full rounded-full bg-gray-300"
+          className="mb-2 h-2 w-full rounded-full bg-[rgb(200,200,200)]"
         >
           &nbsp;
         </Typography>
         <Typography
           as="div"
           variant="paragraph"
-          className=" h-2 w-full rounded-full bg-gray-300"
+          className=" h-2 w-full rounded-full bg-[rgb(200,200,200)]"
         >
           &nbsp;
         </Typography>
@@ -55,7 +55,7 @@ const CardPlaceHolder = () => {
         <Button
           disabled
           tabIndex={-1}
-          className="h-8 w-2/3 bg-gray-300 shadow-none hover:shadow-none"
+          className="h-8 w-2/3 bg-[rgb(200,200,200)]"
         >
           &nbsp;
         </Button>

@@ -28,5 +28,5 @@ module.exports = withMT({
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-easing")],
 });

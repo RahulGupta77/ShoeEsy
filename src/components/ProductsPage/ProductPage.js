@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import CardPlaceHolder from "../../Skeleton/CardPlaceHolder";
 import { backendConfig } from "../../config";
 import { clearAll, updateCategoryBrandFilter } from "../redux/filterSlice";
+import ProductCards from "./ProductCards/ProductCards";
 import SelectComponent from "./SelectComponent";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Sidebar/Sidebar";
 
 const ProductPage = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const ProductPage = () => {
     (store) => store.productFilter
   );
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
 
   useEffect(() => {
     console.log("Filtering Products");
@@ -74,15 +75,23 @@ const ProductPage = () => {
         <div className="col-span-2 relative border-r-2 border-t-2 min-h-full">
           <Sidebar />
         </div>
-        <div className="col-span-8   p-5 border-t-2 min-h-full">
-          <div className="pl-5 grid grid-cols-12 col-span-12">
-            {[...Array(9).keys()].map((_, index) => {
-              return (
-                <div className="col-span-4 p-5" key={index}>
-                  <CardPlaceHolder />
-                </div>
-              );
-            })}
+        <div className="col-span-8 p-5  pt-0 border-t-2 min-h-full">
+          <div className="grid grid-cols-12 col-span-12 px-5 place-items-center">
+            {products ? (
+              <>
+                {products.slice(0, 33).map((product) => (
+                  <ProductCards key={product._id} product={product} />
+                ))}
+              </>
+            ) : (
+              [...Array(12).keys()].map((_, index) => {
+                return (
+                  <div className="col-span-3 p-5" key={index}>
+                    <CardPlaceHolder />
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </div>

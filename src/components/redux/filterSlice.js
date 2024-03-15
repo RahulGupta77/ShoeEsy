@@ -18,8 +18,6 @@ const filterSlice = createSlice({
         sortBy,
       } = state;
 
-      console.log(finalPrice);
-
       if (
         categoryAndBrandFilter.length === 0 &&
         currentRating === null &&
@@ -30,7 +28,6 @@ const filterSlice = createSlice({
         return;
       }
 
-      console.log("finalPrice");
       state.categoryAndBrandFilter = [];
       state.finalPrice = [500, 7000];
       state.currentRating = null;

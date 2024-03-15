@@ -1,7 +1,7 @@
 import { Checkbox, Typography } from "@material-tailwind/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCategoryBrandFilter } from "../redux/filterSlice";
+import { updateCategoryBrandFilter } from "../../redux/filterSlice";
 
 const CategoryFilter = ({ setFilteredProducts, filteredProducts }) => {
   const dispatch = useDispatch();
