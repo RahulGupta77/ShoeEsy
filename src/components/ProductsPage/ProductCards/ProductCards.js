@@ -8,7 +8,16 @@ const ProductCards = ({ product }) => {
   const [showAddToCart, setShowAddToCart] = useState(false);
   const [hoverAnimate, setHoverAnimate] = useState(false);
 
-  console.log(showAddToCart);
+  const { image, rating, ratingCount, brand, name, cost } = product;
+
+  const uiRatingCount = parseFloat(Number(ratingCount) / 1000).toPrecision(2);
+  const ratingNum = Number(rating);
+  const ratingStarColor =
+    ratingNum >= 3.5 && ratingNum <= 5
+      ? "text-[#3f968f]"
+      : ratingNum >= 2 && ratingNum < 3.5
+      ? "text-[#f5b445]"
+      : "text-[#f01e2c]";
 
   return (
     <div
@@ -38,18 +47,18 @@ const ProductCards = ({ product }) => {
             src={product.image}
             alt="shoe product"
             className={
-              "h-full w-full object-cover transition-all duration-[400ms] filter  ease-out-back" +
-              (hoverAnimate && " scale-105")
+              "h-full w-full bg-gray-300 object-cover transition-all duration-[400ms] filter  ease-out-back " +
+              (hoverAnimate && " scale-105 ")
             }
           />
         </div>
-        <div className="absolute bg-[#ffffffcc] px-1 py-1 font-bold text-xs backdrop-blur-2xl bottom-0 flex gap-1 justify-center items-center ml-2 mb-2">
+        <div className="absolute bg-[#ffffffdb] px-1 py-1 font-bold text-xs backdrop-blur-2xl bottom-0 flex gap-1 justify-center items-center ml-2 mb-2">
           <div className="flex gap-x-1 ">
             <p>{product.rating}</p>
-            <StarIcon className="h-4 w-4 text-[#3f968f]" />
+            <StarIcon className={"h-4 w-4 " + ratingStarColor} />
           </div>
           <p>|</p>
-          <p>{product.ratingCount}</p>
+          <p>{uiRatingCount + "k"}</p>
         </div>
         <div
           className={
