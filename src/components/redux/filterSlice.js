@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const filterSlice = createSlice({
   name: "productFilter",
   initialState: {
-    categoryAndBrandFilter: [],
+    categoryFilter: [],
+    brandFilter: [],
     finalPrice: [500, 7000],
     currentRating: null,
     brandAccordianState: [true, true],
@@ -11,15 +12,12 @@ const filterSlice = createSlice({
   },
   reducers: {
     clearAll: (state) => {
-      const {
-        categoryAndBrandFilter,
-        finalPrice,
-        currentRating,
-        sortBy,
-      } = state;
+      const { categoryFilter, brandFilter, finalPrice, currentRating, sortBy } =
+        state;
 
       if (
-        categoryAndBrandFilter.length === 0 &&
+        categoryFilter.length === 0 &&
+        brandFilter.length === 0 &&
         currentRating === null &&
         sortBy === "recommended" &&
         finalPrice[0] === 500 &&
@@ -28,15 +26,16 @@ const filterSlice = createSlice({
         return;
       }
 
-      state.categoryAndBrandFilter = [];
+      state.categoryFilter = [];
+      state.brandFilter = [];
       state.finalPrice = [500, 7000];
       state.currentRating = null;
       state.brandAccordianState = [true, true];
       state.sortBy = "recommended";
     },
 
-    updateCategoryBrandFilter: (state, action) => {
-      const updatedCategory = [...state.categoryAndBrandFilter];
+    updateCategoryFilter: (state, action) => {
+      const updatedCategory = [...state.categoryFilter];
 
       const newFilter = action.payload;
       if (updatedCategory.indexOf(newFilter) !== -1) {
@@ -44,7 +43,19 @@ const filterSlice = createSlice({
       } else {
         updatedCategory.push(newFilter);
       }
-      state.categoryAndBrandFilter = updatedCategory;
+      state.categoryFilter = updatedCategory;
+    },
+
+    updateBrandFilter: (state, action) => {
+      const updatedCategory = [...state.brandFilter];
+
+      const newFilter = action.payload;
+      if (updatedCategory.indexOf(newFilter) !== -1) {
+        updatedCategory.splice(updatedCategory.indexOf(newFilter), 1);
+      } else {
+        updatedCategory.push(newFilter);
+      }
+      state.brandFilter = updatedCategory;
     },
 
     updatePriceFilter: (state, action) => {
@@ -71,7 +82,8 @@ export const {
   clearAll,
   updatePriceFilter,
   updateCurrentRating,
-  updateCategoryBrandFilter,
+  updateCategoryFilter,
+  updateBrandFilter,
   updateBrandAccordianState,
   updateSortBy,
 } = filterSlice.actions;

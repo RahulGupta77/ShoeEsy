@@ -1,17 +1,17 @@
 import { Checkbox, Typography } from "@material-tailwind/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCategoryBrandFilter } from "../../redux/filterSlice";
+import { updateCategoryFilter } from "../../redux/filterSlice";
 
 const CategoryFilter = ({ setFilteredProducts, filteredProducts }) => {
   const dispatch = useDispatch();
 
-  const categoryAndBrandFilter = useSelector(
-    (store) => store.productFilter.categoryAndBrandFilter
+  const {categoryFilter} = useSelector(
+    (store) => store.productFilter 
   );
 
   const handleGenderClick = (e) => {
-    dispatch(updateCategoryBrandFilter(e.target.value));
+    dispatch(updateCategoryFilter(e.target.value));
   };
 
   return (
@@ -25,7 +25,7 @@ const CategoryFilter = ({ setFilteredProducts, filteredProducts }) => {
       <div className="flex flex-col mt-3">
         <Checkbox
           onChange={handleGenderClick}
-          checked={categoryAndBrandFilter.indexOf("men") !== -1}
+          checked={categoryFilter.indexOf("men") !== -1}
           value={"men"}
           icon={
             <svg
@@ -54,7 +54,7 @@ const CategoryFilter = ({ setFilteredProducts, filteredProducts }) => {
         <Checkbox
           onChange={handleGenderClick}
           value={"women"}
-          checked={categoryAndBrandFilter.indexOf("women") !== -1}
+          checked={categoryFilter.indexOf("women") !== -1}
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"

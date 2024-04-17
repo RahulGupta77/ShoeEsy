@@ -1,25 +1,52 @@
-import { Chip } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import CardPlaceHolder from "../../Skeleton/CardPlaceHolder";
 import { backendConfig } from "../../config";
-import { clearAll, updateCategoryBrandFilter } from "../redux/filterSlice";
+import {
+  sidebarFilterFunction,
+  sortByFilter,
+} from "../../utility/ProductPageMethods";
+import { clearAll } from "../redux/filterSlice";
 import ProductCards from "./ProductCards/ProductCards";
+import ProductPageFilterPills from "./ProductPageFilterPills";
 import SelectComponent from "./SelectComponent";
 import Sidebar from "./Sidebar/Sidebar";
 
 const ProductPage = () => {
   const dispatch = useDispatch();
-  const { categoryAndBrandFilter, finalPrice, currentRating } = useSelector(
-    (store) => store.productFilter
-  );
+  const productFilter = useSelector((store) => store.productFilter);
 
-  const [products, setProducts] = useState(null);
+  const { categoryFilter, brandFilter, finalPrice, currentRating, sortBy } =
+    productFilter;
+
+  const [products, setProducts] = useState([]);
+  const [sidebarFilterProducts, setSideBarFilterProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState(null);
 
   useEffect(() => {
-    console.log("Filtering Products");
-  }, [finalPrice, currentRating]);
+    sidebarFilterFunction(
+      categoryFilter,
+      brandFilter,
+      currentRating,
+      finalPrice,
+      products,
+      setFilteredProducts,
+      setSideBarFilterProducts
+    );
+  }, [
+    categoryFilter,
+    products,
+    brandFilter,
+    sortBy,
+    currentRating,
+    finalPrice,
+  ]);
+
+  useEffect(() => {
+    sortByFilter(sortBy, sidebarFilterProducts, setFilteredProducts);
+  }, [sidebarFilterProducts, sortBy]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -49,23 +76,7 @@ const ProductPage = () => {
           </p>
         </div>
         <div className="col-span-6 px-4 pt-2 flex flex-wrap gap-2 items-center ">
-          {categoryAndBrandFilter.map((filterPill) => (
-            <Chip
-              key={filterPill + " pill"}
-              variant="outlined"
-              className="rounded-full"
-              color="pink"
-              open={true}
-              animate={{
-                mount: { y: 0 },
-                unmount: { y: 20 },
-              }}
-              value={filterPill}
-              onClose={() => {
-                dispatch(updateCategoryBrandFilter(filterPill));
-              }}
-            />
-          ))}
+          <ProductPageFilterPills />
         </div>
         <div className="col-span-2 ">
           <SelectComponent />
@@ -77,12 +88,20 @@ const ProductPage = () => {
         </div>
         <div className="col-span-8 p-5  pt-0 border-t-2 min-h-full">
           <div className="grid grid-cols-12 col-span-12 px-5 place-items-center">
-            {products ? (
-              <>
-                {products.slice(0, 33).map((product) => (
-                  <ProductCards key={product._id} product={product} />
-                ))}
-              </>
+            {filteredProducts ? (
+              filteredProducts.length !== 0 ? (
+                <>
+                  {filteredProducts.slice(0, 33).map((product) => (
+                    <ProductCards key={product._id} product={product} />
+                  ))}
+                </>
+              ) : (
+                <div className="col-span-12 mt-16">
+                  <Typography variant="h1" color="pink">
+                    No Products Found :(
+                  </Typography>
+                </div>
+              )
             ) : (
               [...Array(12).keys()].map((_, index) => {
                 return (

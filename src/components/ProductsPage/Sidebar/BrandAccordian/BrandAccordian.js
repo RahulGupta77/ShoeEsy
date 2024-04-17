@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MEN_BRANDS, WOMEN_BRANDS } from "../../../../utility/brands";
 import {
   updateBrandAccordianState,
-  updateCategoryBrandFilter,
+  updateBrandFilter,
 } from "../../../redux/filterSlice";
 import CheckBoxLabel from "./CheckBoxLabel";
 
@@ -36,13 +36,13 @@ function Icon({ id, open }) {
 
 export function BrandAccordian() {
   const dispatch = useDispatch();
-  const { categoryAndBrandFilter, brandAccordianState } = useSelector(
+  const { brandFilter, brandAccordianState } = useSelector(
     (store) => store.productFilter
   );
 
-  const handleBrandCheckClick = (brand) => {
-    dispatch(updateCategoryBrandFilter(brand));
-  };
+   const handleBrandClick = (brand) => {
+     dispatch(updateBrandFilter(brand));
+   };
 
   return (
     <>
@@ -64,8 +64,8 @@ export function BrandAccordian() {
               <CheckBoxLabel
                 key={brand}
                 label={brand}
-                isTrue={categoryAndBrandFilter.indexOf(brand) !== -1}
-                handleBrandCheckClick={handleBrandCheckClick}
+                isTrue={brandFilter.indexOf(brand) !== -1}
+                handleBrandCheckClick={handleBrandClick}
               />
             ))}
           </div>
@@ -90,8 +90,8 @@ export function BrandAccordian() {
               <CheckBoxLabel
                 key={brand}
                 label={brand}
-                isTrue={categoryAndBrandFilter.indexOf(brand) !== -1}
-                handleBrandCheckClick={handleBrandCheckClick}
+                isTrue={brandFilter.indexOf(brand) !== -1}
+                handleBrandCheckClick={handleBrandClick}
               />
             ))}
           </div>
