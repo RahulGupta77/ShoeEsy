@@ -12,7 +12,7 @@ function App() {
 
   //why redux data gets refreshed when going to the wrong route
   return (
-    <div className="cursor-default">
+    <div className="cursor-default ">
       <Header />
       {onlineStatus && <Outlet />}
       <OfflinePage onlineStatus={onlineStatus} />

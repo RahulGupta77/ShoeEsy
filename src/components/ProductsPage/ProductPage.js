@@ -1,30 +1,118 @@
+import { Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import CardPlaceHolder from "../../Skeleton/CardPlaceHolder";
 import { backendConfig } from "../../config";
+import {
+  sidebarFilterFunction,
+  sortByFilter,
+} from "../../utility/ProductPageMethods";
+import { clearAll } from "../redux/filterSlice";
+import ProductCards from "./ProductCards/ProductCards";
+import ProductPageFilterPills from "./ProductPageFilterPills";
+import SelectComponent from "./SelectComponent";
+import Sidebar from "./Sidebar/Sidebar";
 
 const ProductPage = () => {
+  const dispatch = useDispatch();
+  const productFilter = useSelector((store) => store.productFilter);
+
+  const { categoryFilter, brandFilter, finalPrice, currentRating, sortBy } =
+    productFilter;
+
   const [products, setProducts] = useState([]);
+  const [sidebarFilterProducts, setSideBarFilterProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState(null);
+
+  useEffect(() => {
+    sidebarFilterFunction(
+      categoryFilter,
+      brandFilter,
+      currentRating,
+      finalPrice,
+      products,
+      setFilteredProducts,
+      setSideBarFilterProducts
+    );
+  }, [
+    categoryFilter,
+    products,
+    brandFilter,
+    sortBy,
+    currentRating,
+    finalPrice,
+  ]);
+
+  useEffect(() => {
+    sortByFilter(sortBy, sidebarFilterProducts, setFilteredProducts);
+  }, [sidebarFilterProducts, sortBy]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const productsApi = backendConfig.endpoint + "/products";
-      const response = await fetch(productsApi);
-      const data = await response.json();
-      setProducts(data);
+      try {
+        const productsApi = backendConfig.endpoint + "/products";
+        const response = await fetch(productsApi);
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        toast.error(error.message);
+      }
     };
 
     fetchProducts();
   }, []);
 
   return (
-    <div className="min-h-[100vh] flex  relative overflow-hidden">
-      <div className="w-[18rem] h-full my-8 flex-none absolute bg-gray-100 ">
-        {/* <div className="bg-red-100 fixed z-20 "></div> */}
+    <div className="pt-[2.5rem]">
+      <div className="grid grid-cols-10 text-[#394b53]">
+        <div className="col-span-2 px-3 pt-2  font-bold uppercase flex justify-between items-center">
+          <p className="text-md">Filters</p>
+          <p
+            onClick={() => dispatch(clearAll())}
+            className="text-sm text-[#ed4f7a] cursor-pointer h-fit "
+          >
+            Clear All
+          </p>
+        </div>
+        <div className="col-span-6 px-4 pt-2 flex flex-wrap gap-2 items-center ">
+          <ProductPageFilterPills />
+        </div>
+        <div className="col-span-2 ">
+          <SelectComponent />
+        </div>
       </div>
-      <div className="p-8 ml-[18rem] flex flex-wrap justify-center gap-x-16 gap-y-10">
-        {[...Array(12).keys()].map((_, index) => {
-          return <CardPlaceHolder key={index + "a"} />;
-        })}
+      <div className="min-h-[100vh] mt-2 grid grid-cols-10 ">
+        <div className="col-span-2 relative border-r-2 border-t-2 min-h-full">
+          <Sidebar />
+        </div>
+        <div className="col-span-8 p-5  pt-0 border-t-2 min-h-full">
+          <div className="grid grid-cols-12 col-span-12 px-5 place-items-center">
+            {filteredProducts ? (
+              filteredProducts.length !== 0 ? (
+                <>
+                  {filteredProducts.slice(0, 33).map((product) => (
+                    <ProductCards key={product._id} product={product} />
+                  ))}
+                </>
+              ) : (
+                <div className="col-span-12 mt-16">
+                  <Typography variant="h1" color="pink">
+                    No Products Found :(
+                  </Typography>
+                </div>
+              )
+            ) : (
+              [...Array(12).keys()].map((_, index) => {
+                return (
+                  <div className="col-span-3 p-5" key={index}>
+                    <CardPlaceHolder />
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

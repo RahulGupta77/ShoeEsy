@@ -32,7 +32,7 @@ const Header = () => {
   };
 
   return (
-    <div className="sticky top-0 z-50 h-[85px] bg-white flex items-center justify-between px-5 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+    <div className="sticky top-0 z-50 h-[85px] bg-[rgba(255,255,255,0.8)]  backdrop-blur-2xl flex items-center justify-between px-5 shadow-md">
       <div className="h-3/4 w-[200px] cursor-pointer ">
         <Link to="/" onClick={() => handleRouteChangeClick("/", dispatch)}>
           <img src="./logo.png" alt="brand-logo" className="h-full" />
@@ -122,34 +122,36 @@ const Header = () => {
                     >
                       {userName}
                     </Link>
-                    <Link
-                      to="./login"
-                      onClick={() => {
-                        logoutHandler();
-                      }}
-                      onMouseOver={() => setShowLogoutText(true)}
-                      onMouseOut={() => setShowLogoutText(false)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
+                    <div className="relative">
+                      <Link
+                        to="./login"
+                        onClick={() => {
+                          logoutHandler();
+                        }}
+                        onMouseOver={() => setShowLogoutText(true)}
+                        onMouseOut={() => setShowLogoutText(false)}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"
-                        />
-                      </svg>
-                    </Link>
-                    {showLogoutText && (
-                      <span className="absolute  left-3 font-bold bg-white text-[#ed4f7a] px-2 py-1  rounded-l-xl tracking-wider border-2 border-[#ed4f7a] rounded-tr-xl text-sm z-50">
-                        logout
-                      </span>
-                    )}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"
+                          />
+                        </svg>
+                      </Link>
+                      {showLogoutText && (
+                        <span className="absolute -left-[72px] -top-2 font-bold bg-white text-[#ed4f7a] px-2 py-1  rounded-l-xl tracking-wider border-2 border-[#ed4f7a] rounded-tr-xl text-sm z-50">
+                          logout
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </>
