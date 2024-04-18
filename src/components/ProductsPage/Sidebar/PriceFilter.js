@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactSlider from "react-slider";
 import styled from "styled-components";
 import { updatePriceFilter } from "../../redux/filterSlice";
+import { windowScrollUp } from "../../../utility/ProductPageMethods";
 
 const StyledSlider = styled(ReactSlider)`
   width: 100%;
@@ -128,6 +129,7 @@ const PriceFilter = () => {
       });
     }
     dispatch(updatePriceFilter([minVal, maxVal]));
+    windowScrollUp();
   };
 
   const resetPriceValues = () => {
@@ -149,6 +151,7 @@ const PriceFilter = () => {
           <div
             onClick={() => {
               resetPriceValues();
+              windowScrollUp();
             }}
             className="text-sm hover:bg-pink-50 rounded-full text-[#ed4f7a] px-2 py-1 uppercase font-extrabold cursor-pointer "
           >
@@ -180,6 +183,7 @@ const PriceFilter = () => {
           min={500}
           value={[currentValue[0], currentValue[1]]}
           onAfterChange={(val) => {
+            windowScrollUp();
             if (val[0] === 500 && val[1] === 7000) {
               dispatch(updatePriceFilter([500, 7000]));
               return;

@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 export const sidebarFilterFunction = (
   categoryFilter,
   brandFilter,
@@ -136,3 +138,22 @@ export const sortByFilter = (
     }
   }
 };
+
+export const windowScrollUp = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
+export const addToBag = (productId, isLoggedIn, token)=>{
+
+   console.log(productId);
+   console.log("token ", token);
+   
+  if(!isLoggedIn){
+    toast.error("Please login to add Products")
+    return;
+  }
+
+}

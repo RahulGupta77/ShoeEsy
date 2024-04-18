@@ -8,7 +8,8 @@ import {
   sidebarFilterFunction,
   sortByFilter,
 } from "../../utility/ProductPageMethods";
-import { clearAll } from "../redux/filterSlice";
+import { clearAll, updateCurrentPaginationPage } from "../redux/filterSlice";
+import PaginationBtns from "./PaginationBtns";
 import ProductCards from "./ProductCards/ProductCards";
 import ProductPageFilterPills from "./ProductPageFilterPills";
 import SelectComponent from "./SelectComponent";
@@ -17,13 +18,21 @@ import Sidebar from "./Sidebar/Sidebar";
 const ProductPage = () => {
   const dispatch = useDispatch();
   const productFilter = useSelector((store) => store.productFilter);
+  const { isLoggedIn, userInfo } = useSelector((store) => store.userDetails);
 
-  const { categoryFilter, brandFilter, finalPrice, currentRating, sortBy } =
-    productFilter;
+  const {
+    categoryFilter,
+    brandFilter,
+    finalPrice,
+    currentRating,
+    sortBy,
+    currentPaginationPage,
+  } = productFilter;
 
   const [products, setProducts] = useState([]);
   const [sidebarFilterProducts, setSideBarFilterProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(null);
+  const [paginationButtonCount, setPaginationButtonCount] = useState(1);
 
   useEffect(() => {
     sidebarFilterFunction(
@@ -47,6 +56,14 @@ const ProductPage = () => {
   useEffect(() => {
     sortByFilter(sortBy, sidebarFilterProducts, setFilteredProducts);
   }, [sidebarFilterProducts, sortBy]);
+
+  useEffect(() => {
+    if (filteredProducts) {
+      const totalButtons = Math.ceil(filteredProducts.length / 12);
+      setPaginationButtonCount(totalButtons);
+      dispatch(updateCurrentPaginationPage(1));
+    }
+  }, [filteredProducts, dispatch]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -91,9 +108,19 @@ const ProductPage = () => {
             {filteredProducts ? (
               filteredProducts.length !== 0 ? (
                 <>
-                  {filteredProducts.slice(0, 33).map((product) => (
-                    <ProductCards key={product._id} product={product} />
-                  ))}
+                  {filteredProducts
+                    .slice(
+                      currentPaginationPage * 12 - 12,
+                      currentPaginationPage * 12
+                    )
+                    .map((product) => (
+                      <ProductCards
+                        key={product._id}
+                        product={product}
+                        isLoggedIn={isLoggedIn}
+                        token = {userInfo.token}
+                      />
+                    ))}
                 </>
               ) : (
                 <div className="col-span-12 mt-16">
@@ -112,6 +139,11 @@ const ProductPage = () => {
               })
             )}
           </div>
+          {paginationButtonCount !== 0 && (
+            <div className="mt-8 border-t-2 pt-10 pb-5">
+              <PaginationBtns totalButtons={paginationButtonCount} />
+            </div>
+          )}
         </div>
       </div>
     </div>
