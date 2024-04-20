@@ -1,13 +1,23 @@
 import { HeartIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
-import { StarIcon } from "@heroicons/react/24/solid";
+import {
+  HeartIcon as HearIconSolid,
+  ShoppingBagIcon as ShoppingBagIconSolid,
+  StarIcon,
+} from "@heroicons/react/24/solid";
 import { Tooltip } from "@material-tailwind/react";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { isItemInCart } from "../../../utility/CartMethods";
 import { addToBag } from "../../../utility/ProductPageMethods";
+import { updateCartItemsSize } from "../../redux/userSlice";
 
-const ProductCards = ({ product, isLoggedIn, token }) => {
+const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
+  const dispatch = useDispatch();
   const [showAddToCart, setShowAddToCart] = useState(false);
   const [hoverAnimate, setHoverAnimate] = useState(false);
   const [hoverAddToCart, setHoverAddToCart] = useState(false);
+  const isItemPresent = isItemInCart(cartItems, product["_id"]);
 
   const shortenBrandNameString = (str) => {
     if (str.length > 22) {
@@ -15,6 +25,20 @@ const ProductCards = ({ product, isLoggedIn, token }) => {
     } else {
       return str;
     }
+  };
+
+  const handleAddToBag = async (productId, token) => {
+    if (!isLoggedIn) {
+      toast.error("Please login to add Products");
+      return;
+    }
+    if (isItemPresent) {
+      toast.error("Product already in Bag");
+      return;
+    }
+
+    const cartItems = await addToBag(productId, token);
+    dispatch(updateCartItemsSize(cartItems));
   };
 
   return (
@@ -50,10 +74,7 @@ const ProductCards = ({ product, isLoggedIn, token }) => {
         onMouseOut={() => setHoverAnimate(false)}
         className=" w-full h-[80%] relative "
       >
-        <div
-          className="h-full w-full overflow-hidden "
-          onClick={() => addToBag(product["_id"], isLoggedIn, token)}
-        >
+        <div className="h-full w-full overflow-hidden ">
           <Tooltip
             animate={{
               mount: { scale: 1, y: 0 },
@@ -62,8 +83,15 @@ const ProductCards = ({ product, isLoggedIn, token }) => {
             content="Add Item"
             className="text-[#ed4f7a] border-2 border-[#ed4f7a] px-2 py-1 font-bold tracking-wider bg-white rounded-lg text-sm "
           >
-            <div className="absolute top-1 right-1 z-30 cursor-pointer bg-white rounded-full p-1 m-1 ">
-              <HeartIcon className="h-6 w-6  text-[#ed4f7a]" />
+            <div
+              className="absolute top-1 right-1 z-30 cursor-pointer bg-white rounded-full p-1 m-1 "
+              onClick={() => handleAddToBag(product["_id"], token)}
+            >
+              {isItemPresent ? (
+                <HearIconSolid className="h-6 w-6  text-[#ff3f6c]" />
+              ) : (
+                <HeartIcon className="h-6 w-6  text-[#ff3f6c]" />
+              )}
             </div>
           </Tooltip>
           <img
@@ -94,13 +122,26 @@ const ProductCards = ({ product, isLoggedIn, token }) => {
             onMouseOut={() => setHoverAddToCart(false)}
             className={
               "cursor-pointer border w-full mx-3 h-[58%] flex items-center justify-center gap-x-3 " +
-              (hoverAddToCart ? "border-gray-600" : "border-gray-300")
+              (isItemPresent
+                ? "border-[#ff3f6c]"
+                : hoverAddToCart
+                ? "border-gray-600"
+                : "border-gray-300")
             }
-            onClick={() => addToBag(product["_id"], isLoggedIn, token)}
+            onClick={() => handleAddToBag(product["_id"], token)}
           >
-            <ShoppingBagIcon className="h-5 w-5" />
-            <div className="uppercase text-xs leading-[16px] font-semibold mt-1">
-              add to bag
+            {isItemPresent ? (
+              <ShoppingBagIconSolid className="h-5 w-5 text-[#ff3f6c]" />
+            ) : (
+              <ShoppingBagIcon className="h-5 w-5" />
+            )}
+            <div
+              className={
+                "uppercase text-xs leading-[16px] font-semibold mt-1 " +
+                (isItemPresent && "text-[#ff3f6c]")
+              }
+            >
+              {isItemPresent ? "Added" : "Add"} to bag
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ const Navlinks = ({
   route,
   text,
   bubbleRequired = false,
+  cartItemsSize = null,
   image = "",
   svg = false,
 }) => {
@@ -20,11 +21,14 @@ const Navlinks = ({
             onClick={() => handleRouteChangeClick(route, dispatch)}
             className="h-7 w-7 relative flex flex-col justify-center mt-2 items-center cursor-pointer"
           >
-            {bubbleRequired && (
-              <div className="h-5 w-5 bg-[#ed4f7a] rounded-full flex items-center justify-center font-extrabold text-white text-[12px] absolute -top-3 -right-2 animate-bounce">
-                0
-              </div>
-            )}
+            {bubbleRequired && cartItemsSize!==null && 
+              (cartItemsSize !== 0 ? (
+                <div className="h-5 w-5 bg-[#ed4f7a] rounded-full flex items-center justify-center font-extrabold text-white text-[12px] absolute -top-3 -right-2 animate-bounce">
+                  {cartItemsSize}
+                </div>
+              ) : (
+                ""
+              ))}
             {svg ? (
               <div>
                 <svg

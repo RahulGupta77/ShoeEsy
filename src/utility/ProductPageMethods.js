@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { updateCartOnServer } from "./CartMethods";
 
 export const sidebarFilterFunction = (
   categoryFilter,
@@ -146,14 +147,9 @@ export const windowScrollUp = () => {
   });
 };
 
-export const addToBag = (productId, isLoggedIn, token)=>{
+export const addToBag = async (productId, token) => {
 
-   console.log(productId);
-   console.log("token ", token);
-   
-  if(!isLoggedIn){
-    toast.error("Please login to add Products")
-    return;
-  }
+  const data = await updateCartOnServer(productId, 1, token);
 
-}
+  return data.length;
+};

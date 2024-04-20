@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import CardPlaceHolder from "../../Skeleton/CardPlaceHolder";
 import { backendConfig } from "../../config";
+import { fetchCart } from "../../utility/CartMethods";
 import {
   sidebarFilterFunction,
   sortByFilter,
@@ -18,7 +19,9 @@ import Sidebar from "./Sidebar/Sidebar";
 const ProductPage = () => {
   const dispatch = useDispatch();
   const productFilter = useSelector((store) => store.productFilter);
-  const { isLoggedIn, userInfo } = useSelector((store) => store.userDetails);
+  const { isLoggedIn, userInfo, cartItemsSize } = useSelector(
+    (store) => store.userDetails
+  );
 
   const {
     categoryFilter,
@@ -33,6 +36,7 @@ const ProductPage = () => {
   const [sidebarFilterProducts, setSideBarFilterProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(null);
   const [paginationButtonCount, setPaginationButtonCount] = useState(1);
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     sidebarFilterFunction(
@@ -77,8 +81,17 @@ const ProductPage = () => {
       }
     };
 
+    if (isLoggedIn) {
+      const fetchCartItems = async () => {
+        const cartData = await fetchCart(userInfo.token);
+        setCartItems(cartData);
+      };
+
+      fetchCartItems();
+    }
+
     fetchProducts();
-  }, []);
+  }, [isLoggedIn, userInfo, cartItemsSize]);
 
   return (
     <div className="pt-[2.5rem]">
@@ -115,10 +128,11 @@ const ProductPage = () => {
                     )
                     .map((product) => (
                       <ProductCards
-                        key={product._id}
+                        key={product["_id"]}
                         product={product}
                         isLoggedIn={isLoggedIn}
-                        token = {userInfo.token}
+                        token={userInfo.token}
+                        cartItems={cartItems}
                       />
                     ))}
                 </>

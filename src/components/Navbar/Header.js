@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import useOnlineStatus from "../../customHooks/useOnlineStatus.js";
+import { fetchCart } from "../../utility/CartMethods.js";
 import Button from "../Button.js";
-import { toggleLoginStatus, updateUserDetails } from "../redux/userSlice.js";
+import { clearAll } from "../redux/filterSlice.js";
+import {
+  toggleLoginStatus,
+  updateCartItemsSize,
+  updateUserDetails,
+} from "../redux/userSlice.js";
 import { handleRouteChangeClick } from "../updateRouteInStore.js";
 import Navlinks from "./Navlinks";
 
@@ -13,8 +19,11 @@ const Header = () => {
   const [showInternetStatus, setShowInternetStatus] = useState(false);
   const [showLogoutText, setShowLogoutText] = useState(false);
   const isLoggedIn = useSelector((store) => store.userDetails.isLoggedIn);
+  const { username, token } = useSelector(
+    (store) => store.userDetails.userInfo
+  );
   const currentRoute = useSelector((store) => store.navigation.currentRoute);
-  const userName = useSelector((store) => store.userDetails.userInfo.username);
+  const cartItemsSize = useSelector((store) => store.userDetails.cartItemsSize);
   const currentRouteName = currentRoute.split("/").pop();
   const onlineStatus = useOnlineStatus();
 
@@ -28,8 +37,21 @@ const Header = () => {
       })
     );
     dispatch(toggleLoginStatus(false));
+    dispatch(clearAll());
+    dispatch(updateCartItemsSize(0));
     setShowLogoutText(false);
   };
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      const data = await fetchCart(token);
+      if (data) {
+        dispatch(updateCartItemsSize(data.length));
+      }
+    };
+
+    fetchCartItems();
+  }, [dispatch, token]);
 
   return (
     <div className="sticky top-0 z-50 h-[85px] bg-[rgba(255,255,255,0.8)]  backdrop-blur-2xl flex items-center justify-between px-5 shadow-md">
@@ -79,6 +101,7 @@ const Header = () => {
                   text={"Bag"}
                   image="./bag.png"
                   bubbleRequired={true}
+                  cartItemsSize={cartItemsSize}
                 />
                 <Navlinks
                   route={"./checkout"}
@@ -120,7 +143,7 @@ const Header = () => {
                         handleRouteChangeClick("./about", dispatch);
                       }}
                     >
-                      {userName}
+                      {username}
                     </Link>
                     <div className="relative">
                       <Link
