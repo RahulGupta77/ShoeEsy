@@ -9,10 +9,11 @@ const filterSlice = createSlice({
     currentRating: null,
     brandAccordianState: [true, true],
     sortBy: "recommended",
+    currentPaginationPage: 1,
   },
   reducers: {
     clearAll: (state) => {
-      const { categoryFilter, brandFilter, finalPrice, currentRating, sortBy } =
+      const { categoryFilter, brandFilter, finalPrice, currentRating, sortBy, currentPaginationPage } =
         state;
 
       if (
@@ -21,7 +22,8 @@ const filterSlice = createSlice({
         currentRating === null &&
         sortBy === "recommended" &&
         finalPrice[0] === 500 &&
-        finalPrice[1] === 7000
+        finalPrice[1] === 7000 && 
+        currentPaginationPage === 1
       ) {
         return;
       }
@@ -32,6 +34,7 @@ const filterSlice = createSlice({
       state.currentRating = null;
       state.brandAccordianState = [true, true];
       state.sortBy = "recommended";
+      state.currentPaginationPage = 1;
     },
 
     updateCategoryFilter: (state, action) => {
@@ -75,6 +78,10 @@ const filterSlice = createSlice({
     updateSortBy: (state, action) => {
       state.sortBy = action.payload;
     },
+
+    updateCurrentPaginationPage: (state, action)=>{
+      state.currentPaginationPage = action.payload; 
+    }
   },
 });
 
@@ -86,5 +93,6 @@ export const {
   updateBrandFilter,
   updateBrandAccordianState,
   updateSortBy,
+  updateCurrentPaginationPage,
 } = filterSlice.actions;
 export default filterSlice.reducer;

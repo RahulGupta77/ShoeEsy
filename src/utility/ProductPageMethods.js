@@ -1,3 +1,6 @@
+import toast from "react-hot-toast";
+import { updateCartOnServer } from "./CartMethods";
+
 export const sidebarFilterFunction = (
   categoryFilter,
   brandFilter,
@@ -135,4 +138,18 @@ export const sortByFilter = (
       setFilteredProducts(newFilteredProducts);
     }
   }
+};
+
+export const windowScrollUp = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
+export const addToBag = async (productId, token) => {
+
+  const data = await updateCartOnServer(productId, 1, token);
+
+  return data.length;
 };

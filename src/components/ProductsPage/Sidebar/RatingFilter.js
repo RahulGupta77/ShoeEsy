@@ -1,6 +1,7 @@
 import { Rating, Typography } from "@material-tailwind/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { windowScrollUp } from "../../../utility/ProductPageMethods";
 import { updateCurrentRating } from "../../redux/filterSlice";
 
 const RatingFilter = () => {
@@ -22,6 +23,7 @@ const RatingFilter = () => {
         {currentRating && (
           <div
             onClick={() => {
+              windowScrollUp();
               dispatch(updateCurrentRating(null));
             }}
             className="text-sm hover:bg-pink-50  rounded-full text-[#ed4f7a] px-2 py-1 uppercase font-extrabold cursor-pointer "
@@ -52,7 +54,10 @@ const RatingFilter = () => {
               (currentRating === rating ? "text-[#eeba41]" : "text-[#263228]")
             }
             key={rating + "up"}
-            onClick={() => dispatch(updateCurrentRating(rating))}
+            onClick={() => {
+              windowScrollUp();
+              dispatch(updateCurrentRating(rating));
+            }}
           >
             <Rating
               value={rating}
