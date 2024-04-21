@@ -49,7 +49,7 @@ const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
     >
       {product.trending === "true" && (
         <div>
-          <div className=" bg-[#ff3f6c] bg-opacity-60 inline-block absolute top-4 left-0 uppercase text-white text-[10px] font-bold z-10 px-3 py-[6px] leading-none tracking-wider">
+          <div className=" bg-[#ff3f6c] bg-opacity-80 inline-block absolute top-4 left-0 uppercase text-white text-[10px] font-bold z-10 px-3 py-[6px] leading-none tracking-wider">
             Trending
           </div>
           <div
@@ -59,7 +59,7 @@ const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
               borderStyle: "solid",
               borderWidth: "11px",
               borderColor:
-                "rgba(255, 63, 108, .6) transparent rgba(255, 63, 108, .6) rgba(255, 63, 108, .8)",
+                "rgba(255, 63, 108, .7) transparent rgba(255, 63, 108, .7) rgba(255, 63, 108, .9)",
               left: "33%",
               width: "0",
               height: "0",
@@ -80,7 +80,7 @@ const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
               mount: { scale: 1, y: 0 },
               unmount: { scale: 0, y: 25 },
             }}
-            content="Add Item"
+            content={isItemPresent ? "Added Item" : "Add Item"}
             className="text-[#ed4f7a] border-2 border-[#ed4f7a] px-2 py-1 font-bold tracking-wider bg-white rounded-lg text-sm "
           >
             <div

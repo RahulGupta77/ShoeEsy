@@ -1,3 +1,4 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,12 +13,15 @@ import {
 } from "../redux/userSlice.js";
 import { handleRouteChangeClick } from "../updateRouteInStore.js";
 import Navlinks from "./Navlinks";
+import SearchBarSuggestions from "./SearchBarSuggestions.js";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); // is replaced with history in react-router v6
   const [showInternetStatus, setShowInternetStatus] = useState(false);
   const [showLogoutText, setShowLogoutText] = useState(false);
+  const [currentSearchedText, setCurrentSearchedText] = useState("");
+  const [showSearchedSuggestions, setShowSearchedSuggestions] = useState(false);
   const isLoggedIn = useSelector((store) => store.userDetails.isLoggedIn);
   const { username, token } = useSelector(
     (store) => store.userDetails.userInfo
@@ -61,20 +65,42 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="w-[35%] border-2 h-1/2 border-[#ed4f7a] rounded-lg focus-within:border-[#de354c] focus-within:shadow-[4.0px_4.0px_4.0px_rgba(0,0,0,0.38)] flex overflow-hidden ">
+      <div className="w-[35%] relative border-2 h-1/2 border-[#ed4f7a] rounded-lg flex overflow-hidden ">
         <input
           className="w-11/12 h-full px-3 focus:outline-none bg-slate-50"
           placeholder="Search with Ese..."
+          value={currentSearchedText}
+          onChange={(e) => setCurrentSearchedText(e.target.value)}
+          onBlur={() => setTimeout(() => setShowSearchedSuggestions(false), 0)}
+          onFocus={() => setShowSearchedSuggestions(true)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              handleRouteChangeClick("./products", dispatch);
-              navigate("./products");
+              if (currentRouteName !== "products") {
+                handleRouteChangeClick("./products", dispatch);
+                navigate("./products");
+              }
+              setShowSearchedSuggestions(false);
             }
           }}
         />
+        <div
+          onClick={() => {
+            setCurrentSearchedText("");
+            setShowSearchedSuggestions(false);
+          }}
+          className="absolute  right-[3.5rem] top-[2px] text-[#de354c] p-1 hover:bg-pink-50 rounded-full cursor-pointer"
+        >
+          {currentSearchedText && <XMarkIcon className="h-7 w-7 " />}
+        </div>
         <Link
           to="./products"
-          onClick={() => handleRouteChangeClick("./products", dispatch)}
+          onClick={() => {
+            if (currentRouteName !== "products") {
+              handleRouteChangeClick("./products", dispatch);
+              navigate("./products");
+            }
+            setShowSearchedSuggestions(false);
+          }}
           className="w-[10%] bg-[#ed4f7a]  p-1 cursor-pointer flex items-center justify-center hover:bg-[#e3374e]"
         >
           <img
@@ -84,6 +110,10 @@ const Header = () => {
           />
         </Link>
       </div>
+
+      {currentSearchedText.trim() && showSearchedSuggestions && (
+        <SearchBarSuggestions setCurrentSearchedText={setCurrentSearchedText} />
+      )}
 
       {!(currentRouteName === "register") &&
         !(currentRouteName === "login") && (
