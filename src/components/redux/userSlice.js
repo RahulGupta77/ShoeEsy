@@ -9,7 +9,8 @@ const userSlice = createSlice({
       token: "",
       balance: 0,
     },
-    cartItemsSize : 0,
+    cartItemsSize: 0,
+    searchQueryText: "",
   },
   reducers: {
     toggleLoginStatus: (state, actions) => {
@@ -21,12 +22,20 @@ const userSlice = createSlice({
       state.userInfo.balance = actions.payload.balance;
     },
 
-    updateCartItemsSize: (state, actions)=>{
+    updateCartItemsSize: (state, actions) => {
       state.cartItemsSize = actions.payload;
-    }
+    },
+
+    updateSearchQueryText: (state, action) => {
+      state.searchQueryText = action.payload;
+    },
   },
 });
 
-export const { toggleLoginStatus, updateUserDetails, updateCartItemsSize } =
-  userSlice.actions;
+export const {
+  toggleLoginStatus,
+  updateUserDetails,
+  updateCartItemsSize,
+  updateSearchQueryText,
+} = userSlice.actions;
 export default userSlice.reducer;

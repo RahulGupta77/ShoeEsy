@@ -2,13 +2,16 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { backendConfig } from "../../config.js";
 import useOnlineStatus from "../../customHooks/useOnlineStatus.js";
 import { fetchCart } from "../../utility/CartMethods.js";
 import Button from "../Button.js";
 import { clearAll } from "../redux/filterSlice.js";
+import { cacheResults } from "../redux/searchBarSlice.js";
 import {
   toggleLoginStatus,
   updateCartItemsSize,
+  // updateSearchQueryText,
   updateUserDetails,
 } from "../redux/userSlice.js";
 import { handleRouteChangeClick } from "../updateRouteInStore.js";
@@ -22,10 +25,12 @@ const Header = () => {
   const [showLogoutText, setShowLogoutText] = useState(false);
   const [currentSearchedText, setCurrentSearchedText] = useState("");
   const [showSearchedSuggestions, setShowSearchedSuggestions] = useState(false);
+  const [searchedSuggestionsArray, setSearchSuggestionsArray] = useState([]);
   const isLoggedIn = useSelector((store) => store.userDetails.isLoggedIn);
   const { username, token } = useSelector(
     (store) => store.userDetails.userInfo
   );
+  const cachedSearchResults = useSelector((store) => store.searchbar);
   const currentRoute = useSelector((store) => store.navigation.currentRoute);
   const cartItemsSize = useSelector((store) => store.userDetails.cartItemsSize);
   const currentRouteName = currentRoute.split("/").pop();
@@ -57,6 +62,44 @@ const Header = () => {
     fetchCartItems();
   }, [dispatch, token]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (cachedSearchResults[currentSearchedText]) {
+        setSearchSuggestionsArray(cachedSearchResults[currentSearchedText]);
+      } else {
+        const handleSearchChange = async () => {
+          const text = currentSearchedText;
+          if (text?.trim()) {
+            const searchQuerySuggestionsApi =
+              backendConfig.endpoint +
+              `/products/search/suggestions?value=` +
+              text;
+            const response = await fetch(searchQuerySuggestionsApi);
+            const data = await response.json();
+            setSearchSuggestionsArray(data);
+            dispatch(
+              cacheResults({
+                [currentSearchedText]: data,
+              })
+            );
+          }
+        };
+        handleSearchChange();
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [currentSearchedText, cachedSearchResults, dispatch]);
+
+  const navigateToProductsPage = () => {
+    if (currentRouteName !== "products") {
+      handleRouteChangeClick("./products", dispatch);
+      navigate("./products");
+    }
+  };
+
   return (
     <div className="sticky top-0 z-50 h-[85px] bg-[rgba(255,255,255,0.8)]  backdrop-blur-2xl flex items-center justify-between px-5 shadow-md">
       <div className="h-3/4 w-[200px] cursor-pointer ">
@@ -70,15 +113,20 @@ const Header = () => {
           className="w-11/12 h-full px-3 focus:outline-none bg-slate-50"
           placeholder="Search with Ese..."
           value={currentSearchedText}
-          onChange={(e) => setCurrentSearchedText(e.target.value)}
-          onBlur={() => setTimeout(() => setShowSearchedSuggestions(false), 0)}
+          onChange={(e) => {
+            if (!e.target.value?.trim()) {
+              setSearchSuggestionsArray([]);
+            }
+            setCurrentSearchedText(e.target.value);
+          }}
+          onBlur={() =>
+            setTimeout(() => setShowSearchedSuggestions(false), 100)
+          }
           onFocus={() => setShowSearchedSuggestions(true)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              if (currentRouteName !== "products") {
-                handleRouteChangeClick("./products", dispatch);
-                navigate("./products");
-              }
+              console.log(e.key);
+              navigateToProductsPage();
               setShowSearchedSuggestions(false);
             }
           }}
@@ -87,19 +135,15 @@ const Header = () => {
           onClick={() => {
             setCurrentSearchedText("");
             setShowSearchedSuggestions(false);
+            setSearchSuggestionsArray([]);
           }}
           className="absolute  right-[3.5rem] top-[2px] text-[#de354c] p-1 hover:bg-pink-50 rounded-full cursor-pointer"
         >
           {currentSearchedText && <XMarkIcon className="h-7 w-7 " />}
         </div>
-        <Link
-          to="./products"
+        <div
           onClick={() => {
-            if (currentRouteName !== "products") {
-              handleRouteChangeClick("./products", dispatch);
-              navigate("./products");
-            }
-            setShowSearchedSuggestions(false);
+            navigateToProductsPage();
           }}
           className="w-[10%] bg-[#ed4f7a]  p-1 cursor-pointer flex items-center justify-center hover:bg-[#e3374e]"
         >
@@ -108,12 +152,18 @@ const Header = () => {
             alt="search-icon"
             className="h-5/6 w-5/6 object-contain"
           />
-        </Link>
+        </div>
       </div>
 
-      {currentSearchedText.trim() && showSearchedSuggestions && (
-        <SearchBarSuggestions setCurrentSearchedText={setCurrentSearchedText} />
-      )}
+      {currentSearchedText?.trim() &&
+        showSearchedSuggestions &&
+        Boolean(searchedSuggestionsArray.length) && (
+          <SearchBarSuggestions
+            setCurrentSearchedText={setCurrentSearchedText}
+            searchedSuggestionsArray={searchedSuggestionsArray}
+            navigateToProductsPage={navigateToProductsPage}
+          />
+        )}
 
       {!(currentRouteName === "register") &&
         !(currentRouteName === "login") && (
