@@ -1,5 +1,7 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateSearchQueryText } from "../redux/userSlice";
 
 const SearchBarSuggestions = ({
   setCurrentSearchedText,
@@ -7,16 +9,20 @@ const SearchBarSuggestions = ({
   navigateToProductsPage,
 }) => {
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const dispatch = useDispatch();
 
- useEffect(() => {
-   if (searchedSuggestionsArray[selectedSuggestionIndex]) {
-     setCurrentSearchedText(searchedSuggestionsArray[selectedSuggestionIndex]);
-   }
- }, [
-   selectedSuggestionIndex,
-   setCurrentSearchedText,
-   searchedSuggestionsArray,
- ]);
+  useEffect(() => {
+    if (searchedSuggestionsArray[selectedSuggestionIndex]) {
+      setCurrentSearchedText({
+        callSuggestionApi: false,
+        text: searchedSuggestionsArray[selectedSuggestionIndex],
+      });
+    }
+  }, [
+    selectedSuggestionIndex,
+    setCurrentSearchedText,
+    searchedSuggestionsArray,
+  ]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -57,7 +63,11 @@ const SearchBarSuggestions = ({
             }`}
             onMouseDown={() => {
               navigateToProductsPage();
-              setCurrentSearchedText(list);
+              setCurrentSearchedText({
+                callSuggestionApi: false,
+                text: list,
+              });
+              dispatch(updateSearchQueryText(list));
             }}
           >
             <MagnifyingGlassIcon className="h-5 w-5" />

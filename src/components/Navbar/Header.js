@@ -7,11 +7,11 @@ import useOnlineStatus from "../../customHooks/useOnlineStatus.js";
 import { fetchCart } from "../../utility/CartMethods.js";
 import Button from "../Button.js";
 import { clearAll } from "../redux/filterSlice.js";
-import { cacheResults } from "../redux/searchBarSlice.js";
+import { cacheResults, clearCacheResults } from "../redux/searchBarSlice.js";
 import {
   toggleLoginStatus,
   updateCartItemsSize,
-  // updateSearchQueryText,
+  updateSearchQueryText,
   updateUserDetails,
 } from "../redux/userSlice.js";
 import { handleRouteChangeClick } from "../updateRouteInStore.js";
@@ -23,7 +23,10 @@ const Header = () => {
   const navigate = useNavigate(); // is replaced with history in react-router v6
   const [showInternetStatus, setShowInternetStatus] = useState(false);
   const [showLogoutText, setShowLogoutText] = useState(false);
-  const [currentSearchedText, setCurrentSearchedText] = useState("");
+  const [currentSearchedText, setCurrentSearchedText] = useState({
+    callSuggestionApi: false,
+    text: "",
+  });
   const [showSearchedSuggestions, setShowSearchedSuggestions] = useState(false);
   const [searchedSuggestionsArray, setSearchSuggestionsArray] = useState([]);
   const isLoggedIn = useSelector((store) => store.userDetails.isLoggedIn);
@@ -60,31 +63,37 @@ const Header = () => {
     };
 
     fetchCartItems();
+    dispatch(clearCacheResults()); //<-- clearing the search suggestion cache when header is component is rendered for the first time as token and dispatch would be constant
   }, [dispatch, token]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (cachedSearchResults[currentSearchedText]) {
-        setSearchSuggestionsArray(cachedSearchResults[currentSearchedText]);
+      if (cachedSearchResults[currentSearchedText.text]) {
+        setSearchSuggestionsArray(
+          cachedSearchResults[currentSearchedText.text]
+        );
       } else {
         const handleSearchChange = async () => {
-          const text = currentSearchedText;
-          if (text?.trim()) {
-            const searchQuerySuggestionsApi =
-              backendConfig.endpoint +
-              `/products/search/suggestions?value=` +
-              text;
-            const response = await fetch(searchQuerySuggestionsApi);
-            const data = await response.json();
-            setSearchSuggestionsArray(data);
-            dispatch(
-              cacheResults({
-                [currentSearchedText]: data,
-              })
-            );
-          }
+          try {
+            const text = currentSearchedText.text;
+            if (text?.trim()) {
+              const searchQuerySuggestionsApi =
+                backendConfig.endpoint +
+                `/products/search/suggestions?value=` +
+                text;
+              const response = await fetch(searchQuerySuggestionsApi);
+              const data = await response.json();
+              setSearchSuggestionsArray(data);
+              setShowSearchedSuggestions(true);
+              dispatch(
+                cacheResults({
+                  [currentSearchedText.text]: data,
+                })
+              );
+            }
+          } catch (error) {}
         };
-        handleSearchChange();
+        if (currentSearchedText.callSuggestionApi) handleSearchChange();
       }
     }, 300);
 
@@ -112,12 +121,16 @@ const Header = () => {
         <input
           className="w-11/12 h-full px-3 focus:outline-none bg-slate-50"
           placeholder="Search with Ese..."
-          value={currentSearchedText}
+          value={currentSearchedText.text}
           onChange={(e) => {
             if (!e.target.value?.trim()) {
+              dispatch(updateSearchQueryText(""));
               setSearchSuggestionsArray([]);
             }
-            setCurrentSearchedText(e.target.value);
+            setCurrentSearchedText({
+              callSuggestionApi: true,
+              text: e.target.value,
+            });
           }}
           onBlur={() =>
             setTimeout(() => setShowSearchedSuggestions(false), 100)
@@ -125,25 +138,33 @@ const Header = () => {
           onFocus={() => setShowSearchedSuggestions(true)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              console.log(e.key);
+              dispatch(updateSearchQueryText(currentSearchedText.text));
               navigateToProductsPage();
               setShowSearchedSuggestions(false);
             }
           }}
         />
-        <div
-          onClick={() => {
-            setCurrentSearchedText("");
-            setShowSearchedSuggestions(false);
-            setSearchSuggestionsArray([]);
-          }}
-          className="absolute  right-[3.5rem] top-[2px] text-[#de354c] p-1 hover:bg-pink-50 rounded-full cursor-pointer"
-        >
-          {currentSearchedText && <XMarkIcon className="h-7 w-7 " />}
-        </div>
+        {currentSearchedText.text && (
+          <div
+            onClick={() => {
+              setCurrentSearchedText({
+                callSuggestionApi: false,
+                text: "",
+              });
+              setShowSearchedSuggestions(false);
+              setSearchSuggestionsArray([]);
+              dispatch(updateSearchQueryText(""));
+            }}
+            className="absolute  right-[3.5rem] top-[2px] text-[#de354c] p-1 hover:bg-pink-50 rounded-full cursor-pointer"
+          >
+            <XMarkIcon className="h-7 w-7 " />
+          </div>
+        )}
+
         <div
           onClick={() => {
             navigateToProductsPage();
+            dispatch(updateSearchQueryText(currentSearchedText.text));
           }}
           className="w-[10%] bg-[#ed4f7a]  p-1 cursor-pointer flex items-center justify-center hover:bg-[#e3374e]"
         >
@@ -155,7 +176,7 @@ const Header = () => {
         </div>
       </div>
 
-      {currentSearchedText?.trim() &&
+      {currentSearchedText.text?.trim() &&
         showSearchedSuggestions &&
         Boolean(searchedSuggestionsArray.length) && (
           <SearchBarSuggestions

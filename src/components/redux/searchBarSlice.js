@@ -4,9 +4,7 @@ const searchBarSlice = createSlice({
   name: "searchbar",
   initialState: {},
   reducers: {
-   
     cacheResults: (state, action) => {
-     
       state = {
         ...state,
         ...action.payload,
@@ -14,8 +12,13 @@ const searchBarSlice = createSlice({
 
       return state;
     },
+
+    clearCacheResults: () => {
+      console.log("clearing cache results");
+      return {};
+    },
   },
 });
 
-export const { cacheResults } = searchBarSlice.actions;
+export const { cacheResults, clearCacheResults } = searchBarSlice.actions;
 export default searchBarSlice.reducer;

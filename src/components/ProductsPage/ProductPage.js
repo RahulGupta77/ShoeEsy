@@ -19,10 +19,10 @@ import Sidebar from "./Sidebar/Sidebar";
 const ProductPage = () => {
   const dispatch = useDispatch();
   const productFilter = useSelector((store) => store.productFilter);
+  const {searchQueryText} = useSelector(store=> store.userDetails);
   const { isLoggedIn, userInfo, cartItemsSize } = useSelector(
     (store) => store.userDetails
   );
-
   const {
     categoryFilter,
     brandFilter,
@@ -92,6 +92,10 @@ const ProductPage = () => {
 
     fetchProducts();
   }, [isLoggedIn, userInfo, cartItemsSize]);
+
+  useEffect(()=>{
+    console.log(searchQueryText);
+  }, [searchQueryText])
 
   return (
     <div className="pt-[2.5rem]">
