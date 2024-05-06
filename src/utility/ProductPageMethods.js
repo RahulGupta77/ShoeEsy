@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import { updateCartOnServer } from "./CartMethods";
 
 export const sidebarFilterFunction = (
@@ -148,7 +147,6 @@ export const windowScrollUp = () => {
 };
 
 export const addToBag = async (productId, token) => {
-
   const data = await updateCartOnServer(productId, 1, token);
 
   return data.length;

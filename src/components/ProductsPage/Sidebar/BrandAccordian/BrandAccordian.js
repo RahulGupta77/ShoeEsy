@@ -10,6 +10,7 @@ import { MEN_BRANDS, WOMEN_BRANDS } from "../../../../utility/brands";
 import {
   updateBrandAccordianState,
   updateBrandFilter,
+  updateCurrentPaginationPage,
 } from "../../../redux/filterSlice";
 import CheckBoxLabel from "./CheckBoxLabel";
 
@@ -42,6 +43,7 @@ export function BrandAccordian() {
 
    const handleBrandClick = (brand) => {
      dispatch(updateBrandFilter(brand));
+      dispatch(updateCurrentPaginationPage(1));
    };
 
   return (

@@ -1,27 +1,40 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { backendConfig } from "../../config.js";
 import useOnlineStatus from "../../customHooks/useOnlineStatus.js";
 import { fetchCart } from "../../utility/CartMethods.js";
 import Button from "../Button.js";
 import { clearAll } from "../redux/filterSlice.js";
+import { cacheResults, clearCacheResults } from "../redux/searchBarSlice.js";
 import {
   toggleLoginStatus,
   updateCartItemsSize,
+  updateSearchQueryText,
   updateUserDetails,
 } from "../redux/userSlice.js";
 import { handleRouteChangeClick } from "../updateRouteInStore.js";
 import Navlinks from "./Navlinks";
+import SearchBarSuggestions from "./SearchBarSuggestions.js";
+import { updateCurrentPaginationPage } from "../redux/filterSlice.js";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); // is replaced with history in react-router v6
   const [showInternetStatus, setShowInternetStatus] = useState(false);
   const [showLogoutText, setShowLogoutText] = useState(false);
+  const [currentSearchedText, setCurrentSearchedText] = useState({
+    callSuggestionApi: false,
+    text: "",
+  });
+  const [showSearchedSuggestions, setShowSearchedSuggestions] = useState(false);
+  const [searchedSuggestionsArray, setSearchSuggestionsArray] = useState([]);
   const isLoggedIn = useSelector((store) => store.userDetails.isLoggedIn);
   const { username, token } = useSelector(
     (store) => store.userDetails.userInfo
   );
+  const cachedSearchResults = useSelector((store) => store.searchbar);
   const currentRoute = useSelector((store) => store.navigation.currentRoute);
   const cartItemsSize = useSelector((store) => store.userDetails.cartItemsSize);
   const currentRouteName = currentRoute.split("/").pop();
@@ -51,7 +64,52 @@ const Header = () => {
     };
 
     fetchCartItems();
+    dispatch(updateSearchQueryText(""));
+    dispatch(clearCacheResults()); //<-- clearing the search suggestion cache when header is component is rendered for the first time as token and dispatch would be constant
   }, [dispatch, token]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (cachedSearchResults[currentSearchedText.text]) {
+        setSearchSuggestionsArray(
+          cachedSearchResults[currentSearchedText.text]
+        );
+      } else {
+        const handleSearchChange = async () => {
+          try {
+            const text = currentSearchedText.text;
+            if (text?.trim()) {
+              const searchQuerySuggestionsApi =
+                backendConfig.endpoint +
+                `/products/search/suggestions?value=` +
+                text;
+              const response = await fetch(searchQuerySuggestionsApi);
+              const data = await response.json();
+              setSearchSuggestionsArray(data);
+              setShowSearchedSuggestions(true);
+              dispatch(
+                cacheResults({
+                  [currentSearchedText.text]: data,
+                })
+              );
+            }
+          } catch (error) {}
+        };
+        if (currentSearchedText.callSuggestionApi) handleSearchChange();
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [currentSearchedText, cachedSearchResults, dispatch]);
+
+  const navigateToProductsPage = () => {
+    if (currentRouteName !== "products") {
+      handleRouteChangeClick("./products", dispatch);
+      navigate("./products");
+    }
+  };
 
   return (
     <div className="sticky top-0 z-50 h-[85px] bg-[rgba(255,255,255,0.8)]  backdrop-blur-2xl flex items-center justify-between px-5 shadow-md">
@@ -61,20 +119,58 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="w-[35%] border-2 h-1/2 border-[#ed4f7a] rounded-lg focus-within:border-[#de354c] focus-within:shadow-[4.0px_4.0px_4.0px_rgba(0,0,0,0.38)] flex overflow-hidden ">
+      <div className="w-[35%] relative border-2 h-1/2 border-[#ed4f7a] rounded-lg flex overflow-hidden ">
         <input
           className="w-11/12 h-full px-3 focus:outline-none bg-slate-50"
           placeholder="Search with Ese..."
+          value={currentSearchedText.text}
+          onChange={(e) => {
+            if (!e.target.value?.trim()) {
+              dispatch(updateSearchQueryText(""));
+              setSearchSuggestionsArray([]);
+              dispatch(updateCurrentPaginationPage(1));
+            }
+            setCurrentSearchedText({
+              callSuggestionApi: true,
+              text: e.target.value,
+            });
+          }}
+          onBlur={() =>
+            setTimeout(() => setShowSearchedSuggestions(false), 100)
+          }
+          onFocus={() => setShowSearchedSuggestions(true)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              handleRouteChangeClick("./products", dispatch);
-              navigate("./products");
+              dispatch(updateSearchQueryText(currentSearchedText.text));
+              navigateToProductsPage();
+              setShowSearchedSuggestions(false);
+               dispatch(updateCurrentPaginationPage(1));
             }
           }}
         />
-        <Link
-          to="./products"
-          onClick={() => handleRouteChangeClick("./products", dispatch)}
+        {currentSearchedText.text && (
+          <div
+            onClick={() => {
+              setCurrentSearchedText({
+                callSuggestionApi: false,
+                text: "",
+              });
+              setShowSearchedSuggestions(false);
+              setSearchSuggestionsArray([]);
+              dispatch(updateSearchQueryText(""));
+            }}
+            className="absolute  right-[3.5rem] top-[2px] text-[#de354c] p-1 hover:bg-pink-50 rounded-full cursor-pointer"
+          >
+            <XMarkIcon className="h-7 w-7 " />
+          </div>
+        )}
+
+        <div
+          onClick={() => {
+            navigateToProductsPage();
+            dispatch(updateSearchQueryText(currentSearchedText.text));
+             dispatch(updateCurrentPaginationPage(1));
+          }}
           className="w-[10%] bg-[#ed4f7a]  p-1 cursor-pointer flex items-center justify-center hover:bg-[#e3374e]"
         >
           <img
@@ -82,8 +178,18 @@ const Header = () => {
             alt="search-icon"
             className="h-5/6 w-5/6 object-contain"
           />
-        </Link>
+        </div>
       </div>
+
+      {currentSearchedText.text?.trim() &&
+        showSearchedSuggestions &&
+        Boolean(searchedSuggestionsArray.length) && (
+          <SearchBarSuggestions
+            setCurrentSearchedText={setCurrentSearchedText}
+            searchedSuggestionsArray={searchedSuggestionsArray}
+            navigateToProductsPage={navigateToProductsPage}
+          />
+        )}
 
       {!(currentRouteName === "register") &&
         !(currentRouteName === "login") && (
