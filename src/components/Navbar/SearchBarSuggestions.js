@@ -2,6 +2,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateSearchQueryText } from "../redux/userSlice";
+import { updateCurrentPaginationPage } from "../redux/filterSlice";
 
 const SearchBarSuggestions = ({
   setCurrentSearchedText,
@@ -68,6 +69,7 @@ const SearchBarSuggestions = ({
                 text: list,
               });
               dispatch(updateSearchQueryText(list));
+               dispatch(updateCurrentPaginationPage(1));
             }}
           >
             <MagnifyingGlassIcon className="h-5 w-5" />

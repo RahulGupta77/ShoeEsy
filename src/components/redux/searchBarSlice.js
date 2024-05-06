@@ -14,7 +14,6 @@ const searchBarSlice = createSlice({
     },
 
     clearCacheResults: () => {
-      console.log("clearing cache results");
       return {};
     },
   },

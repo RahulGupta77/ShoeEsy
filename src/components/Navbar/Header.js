@@ -17,6 +17,7 @@ import {
 import { handleRouteChangeClick } from "../updateRouteInStore.js";
 import Navlinks from "./Navlinks";
 import SearchBarSuggestions from "./SearchBarSuggestions.js";
+import { updateCurrentPaginationPage } from "../redux/filterSlice.js";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ const Header = () => {
     };
 
     fetchCartItems();
+    dispatch(updateSearchQueryText(""));
     dispatch(clearCacheResults()); //<-- clearing the search suggestion cache when header is component is rendered for the first time as token and dispatch would be constant
   }, [dispatch, token]);
 
@@ -126,6 +128,7 @@ const Header = () => {
             if (!e.target.value?.trim()) {
               dispatch(updateSearchQueryText(""));
               setSearchSuggestionsArray([]);
+              dispatch(updateCurrentPaginationPage(1));
             }
             setCurrentSearchedText({
               callSuggestionApi: true,
@@ -141,6 +144,7 @@ const Header = () => {
               dispatch(updateSearchQueryText(currentSearchedText.text));
               navigateToProductsPage();
               setShowSearchedSuggestions(false);
+               dispatch(updateCurrentPaginationPage(1));
             }
           }}
         />
@@ -165,6 +169,7 @@ const Header = () => {
           onClick={() => {
             navigateToProductsPage();
             dispatch(updateSearchQueryText(currentSearchedText.text));
+             dispatch(updateCurrentPaginationPage(1));
           }}
           className="w-[10%] bg-[#ed4f7a]  p-1 cursor-pointer flex items-center justify-center hover:bg-[#e3374e]"
         >

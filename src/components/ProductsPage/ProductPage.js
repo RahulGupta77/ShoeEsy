@@ -9,7 +9,7 @@ import {
   sidebarFilterFunction,
   sortByFilter,
 } from "../../utility/ProductPageMethods";
-import { clearAll, updateCurrentPaginationPage } from "../redux/filterSlice";
+import { clearAll } from "../redux/filterSlice";
 import PaginationBtns from "./PaginationBtns";
 import ProductCards from "./ProductCards/ProductCards";
 import ProductPageFilterPills from "./ProductPageFilterPills";
@@ -19,7 +19,7 @@ import Sidebar from "./Sidebar/Sidebar";
 const ProductPage = () => {
   const dispatch = useDispatch();
   const productFilter = useSelector((store) => store.productFilter);
-  const {searchQueryText} = useSelector(store=> store.userDetails);
+  const { searchQueryText } = useSelector((store) => store.userDetails);
   const { isLoggedIn, userInfo, cartItemsSize } = useSelector(
     (store) => store.userDetails
   );
@@ -36,6 +36,7 @@ const ProductPage = () => {
   const [sidebarFilterProducts, setSideBarFilterProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(null);
   const [paginationButtonCount, setPaginationButtonCount] = useState(1);
+  const [tempFilteredProducts, setTempFilteredProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
@@ -65,7 +66,6 @@ const ProductPage = () => {
     if (filteredProducts) {
       const totalButtons = Math.ceil(filteredProducts.length / 12);
       setPaginationButtonCount(totalButtons);
-      dispatch(updateCurrentPaginationPage(1));
     }
   }, [filteredProducts, dispatch]);
 
@@ -81,6 +81,11 @@ const ProductPage = () => {
       }
     };
 
+    fetchProducts();
+    dispatch(clearAll());
+  }, []);
+
+  useEffect(() => {
     if (isLoggedIn) {
       const fetchCartItems = async () => {
         const cartData = await fetchCart(userInfo.token);
@@ -89,13 +94,52 @@ const ProductPage = () => {
 
       fetchCartItems();
     }
+  }, [cartItemsSize, isLoggedIn, userInfo]);
 
-    fetchProducts();
-  }, [isLoggedIn, userInfo, cartItemsSize]);
+  useEffect(() => {
 
-  useEffect(()=>{
-    console.log(searchQueryText);
-  }, [searchQueryText])
+    if (
+      !searchQueryText.trim() &&
+      tempFilteredProducts &&
+      tempFilteredProducts.length
+    ) {
+      
+      setTempFilteredProducts([]);
+
+       sidebarFilterFunction(
+         categoryFilter,
+         brandFilter,
+         currentRating,
+         finalPrice,
+         products,
+         setFilteredProducts,
+         setSideBarFilterProducts
+       );
+      return;
+    }
+
+    const searchUrl =
+      backendConfig.endpoint + "/products/search?value=" + searchQueryText;
+
+    const performApiSearch = async () => {
+      try {
+        setTempFilteredProducts(filteredProducts);
+
+        const response = await fetch(searchUrl);
+        if (!response.ok) {
+          throw new Error("No Products found!!");
+        }
+
+        const data = await response.json();
+        setFilteredProducts(data);
+      } catch (error) {
+        toast.error(error.message, { variant: "error" });
+      }
+    };
+
+    performApiSearch();
+  }, [searchQueryText]);
+
 
   return (
     <div className="pt-[2.5rem]">

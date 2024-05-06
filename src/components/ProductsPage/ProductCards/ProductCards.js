@@ -38,6 +38,7 @@ const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
     }
 
     const cartItems = await addToBag(productId, token);
+    toast.success("Product successfully added");
     dispatch(updateCartItemsSize(cartItems));
   };
 

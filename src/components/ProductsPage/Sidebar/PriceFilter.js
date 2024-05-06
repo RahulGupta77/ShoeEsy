@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import ReactSlider from "react-slider";
 import styled from "styled-components";
-import { updatePriceFilter } from "../../redux/filterSlice";
+import { updateCurrentPaginationPage, updatePriceFilter } from "../../redux/filterSlice";
 import { windowScrollUp } from "../../../utility/ProductPageMethods";
 
 const StyledSlider = styled(ReactSlider)`
@@ -129,6 +129,7 @@ const PriceFilter = () => {
       });
     }
     dispatch(updatePriceFilter([minVal, maxVal]));
+     dispatch(updateCurrentPaginationPage(1));
     windowScrollUp();
   };
 
@@ -136,6 +137,7 @@ const PriceFilter = () => {
     dispatch(updatePriceFilter([500, 7000]));
     setCurrentValue([500, 7000]);
     setInputValue(["500", "7000"]);
+     dispatch(updateCurrentPaginationPage(1));
   };
 
   return (
@@ -184,6 +186,7 @@ const PriceFilter = () => {
           value={[currentValue[0], currentValue[1]]}
           onAfterChange={(val) => {
             windowScrollUp();
+             dispatch(updateCurrentPaginationPage(1));
             if (val[0] === 500 && val[1] === 7000) {
               dispatch(updatePriceFilter([500, 7000]));
               return;

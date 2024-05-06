@@ -2,7 +2,10 @@ import { Rating, Typography } from "@material-tailwind/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { windowScrollUp } from "../../../utility/ProductPageMethods";
-import { updateCurrentRating } from "../../redux/filterSlice";
+import {
+  updateCurrentPaginationPage,
+  updateCurrentRating,
+} from "../../redux/filterSlice";
 
 const RatingFilter = () => {
   const dispatch = useDispatch();
@@ -25,6 +28,7 @@ const RatingFilter = () => {
             onClick={() => {
               windowScrollUp();
               dispatch(updateCurrentRating(null));
+              dispatch(updateCurrentPaginationPage(1));
             }}
             className="text-sm hover:bg-pink-50  rounded-full text-[#ed4f7a] px-2 py-1 uppercase font-extrabold cursor-pointer "
           >
@@ -57,6 +61,7 @@ const RatingFilter = () => {
             onClick={() => {
               windowScrollUp();
               dispatch(updateCurrentRating(rating));
+              dispatch(updateCurrentPaginationPage(1));
             }}
           >
             <Rating

@@ -1,7 +1,7 @@
 import { Checkbox, Typography } from "@material-tailwind/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCategoryFilter } from "../../redux/filterSlice";
+import { updateCategoryFilter, updateCurrentPaginationPage } from "../../redux/filterSlice";
 
 const CategoryFilter = ({ setFilteredProducts, filteredProducts }) => {
   const dispatch = useDispatch();
@@ -12,6 +12,7 @@ const CategoryFilter = ({ setFilteredProducts, filteredProducts }) => {
 
   const handleGenderClick = (e) => {
     dispatch(updateCategoryFilter(e.target.value));
+     dispatch(updateCurrentPaginationPage(1));
   };
 
   return (
