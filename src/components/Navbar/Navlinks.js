@@ -23,7 +23,7 @@ const Navlinks = ({
           >
             {bubbleRequired && cartItemsSize!==null && 
               (cartItemsSize !== 0 ? (
-                <div className="h-5 w-5 bg-[#ed4f7a] rounded-full flex items-center justify-center font-extrabold text-white text-[12px] absolute -top-3 -right-2 animate-bounce">
+                <div className="h-5 w-5 bg-[#ed4f7a] rounded-full flex items-center justify-center font-extrabold text-white text-[12px] absolute -top-4 -right-2 animate-bounce">
                   {cartItemsSize}
                 </div>
               ) : (

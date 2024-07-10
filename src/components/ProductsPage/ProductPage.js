@@ -83,7 +83,7 @@ const ProductPage = () => {
 
     fetchProducts();
     dispatch(clearAll());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isLoggedIn) {

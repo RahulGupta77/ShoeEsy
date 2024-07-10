@@ -11,7 +11,7 @@ const CardPlaceHolder = () => {
       <CardHeader
         shadow={false}
         floated={false}
-        className="relative grid h-[22rem] place-items-center bg-[rgb(200,200,200)]"
+        className="relative grid h-[22rem] place-items-center bg-gray-300"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +19,7 @@ const CardPlaceHolder = () => {
           viewBox="0 0 24 24"
           strokeWidth={2}
           stroke="currentColor"
-          className="h-12 w-12 text-gray-500"
+          className="h-12 w-12 text-gray-300"
         >
           <path
             strokeLinecap="round"
@@ -32,21 +32,21 @@ const CardPlaceHolder = () => {
         <Typography
           as="div"
           variant="h1"
-          className="mb-2 h-4 w-[6rem] rounded-full bg-[rgb(200,200,200)]"
+          className="mb-2 h-4 w-[6rem] rounded-full bg-gray-300"
         >
           &nbsp;
         </Typography>
         <Typography
           as="div"
           variant="paragraph"
-          className="mb-2 h-2 w-full rounded-full bg-[rgb(200,200,200)]"
+          className="mb-2 h-2 w-full rounded-full bg-gray-300"
         >
           &nbsp;
         </Typography>
         <Typography
           as="div"
           variant="paragraph"
-          className=" h-2 w-full rounded-full bg-[rgb(200,200,200)]"
+          className=" h-2 w-full rounded-full bg-gray-300"
         >
           &nbsp;
         </Typography>
@@ -55,7 +55,7 @@ const CardPlaceHolder = () => {
         <Button
           disabled
           tabIndex={-1}
-          className="h-8 w-2/3 bg-[rgb(200,200,200)]"
+          className="h-8 w-2/3 bg-gray-300"
         >
           &nbsp;
         </Button>

@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { backendConfig } from "../config";
+import { backendConfig, couponsArray, discountArray, freeDeliveryArray } from "../config";
 
 export const fetchCart = async (token) => {
   if (!token) return;
@@ -56,3 +56,53 @@ export const isItemInCart = (cartItems, productId) => {
   if (searchedItem) return true;
   return false;
 };
+
+
+export const generateCartItemsFrom = (cartData, productsData) => {
+  let cartItems = [];
+
+  //could have used map and find method to impelement this. map() on cartData and find() on productsData pwq
+  cartData.forEach((cartEle) => {
+    productsData.forEach((productEle) => {
+      if (cartEle.productId === productEle["_id"]) {
+        cartItems.push({
+          ...productEle,
+          qty: cartEle.qty,
+        });
+      }
+    });
+  });
+  return cartItems;
+};
+
+export const getTotalCartValue = (items) => {
+  return items.reduce((acc, item) => {
+    return acc + item.qty * Number(item.cost);
+  }, 0);
+};
+
+export function getDiscountValue(totalCartValue) {
+
+  let index = Math.floor(totalCartValue / 1000);
+  if (index >= discountArray.length) {
+    index = discountArray.length - 1;
+  }
+  return discountArray[index];
+}
+
+export function getCouponsValue(totalCartValue) {
+  let index = Math.floor(totalCartValue / 1000);
+  if (index >= couponsArray.length) {
+    index = couponsArray.length - 1;
+  }
+  return couponsArray[index];
+}
+
+
+export function getFreeDeliveryValue(totalCartValue){
+  let index = Math.floor(totalCartValue / 1000);
+  if (index >= freeDeliveryArray.length) {
+    index = freeDeliveryArray.length - 1;
+  }
+  return freeDeliveryArray[index];
+}
