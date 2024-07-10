@@ -144,7 +144,7 @@ const Header = () => {
               dispatch(updateSearchQueryText(currentSearchedText.text));
               navigateToProductsPage();
               setShowSearchedSuggestions(false);
-               dispatch(updateCurrentPaginationPage(1));
+              dispatch(updateCurrentPaginationPage(1));
             }
           }}
         />
@@ -169,7 +169,7 @@ const Header = () => {
           onClick={() => {
             navigateToProductsPage();
             dispatch(updateSearchQueryText(currentSearchedText.text));
-             dispatch(updateCurrentPaginationPage(1));
+            dispatch(updateCurrentPaginationPage(1));
           }}
           className="w-[10%] bg-[#ed4f7a]  p-1 cursor-pointer flex items-center justify-center hover:bg-[#e3374e]"
         >
@@ -203,16 +203,11 @@ const Header = () => {
             {isLoggedIn && (
               <>
                 <Navlinks
-                  route={"./cart"}
-                  text={"Bag"}
-                  image="./bag.png"
-                  bubbleRequired={true}
-                  cartItemsSize={cartItemsSize}
-                />
-                <Navlinks
                   route={"./checkout"}
                   text={"Checkout"}
                   image="./checkout.png"
+                  bubbleRequired={true}
+                  cartItemsSize={cartItemsSize}
                 />
 
                 <div
