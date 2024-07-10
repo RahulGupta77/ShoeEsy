@@ -37,9 +37,10 @@ const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
       return;
     }
 
-    const cartItems = await addToBag(productId, token);
+    const cartItemsSize = await addToBag(productId, token);
     toast.success("Product successfully added");
-    dispatch(updateCartItemsSize(cartItems));
+    console.log(cartItemsSize);
+    dispatch(updateCartItemsSize(cartItemsSize));
   };
 
   return (

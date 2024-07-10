@@ -20,7 +20,7 @@ import BagCheckout from "./BagCheckout/BagCheckout";
 import PaymentCheckout from "./PaymentCheckout";
 
 const Checkout = () => {
-  const { cartItemsSize, userInfo } = useSelector((store) => store.userDetails);
+  const { userInfo } = useSelector((store) => store.userDetails);
   const isLoggedIn = useSelector((store) => store.userDetails.isLoggedIn);
   const [activeStep, setActiveStep] = useState(0);
   const [cartItems, setCartItems] = useState([]);
@@ -55,6 +55,8 @@ const Checkout = () => {
   }
 
   const handleNext = () => setActiveStep((cur) => cur + 1);
+
+  console.log("re-rendering")
 
   return (
     <div className="w-full relative px-24 py-4 mt-5 flex flex-col items-center">
@@ -115,12 +117,12 @@ const Checkout = () => {
       </Stepper>
 
       {activeStep === 0 && (
-        <div className="mt-16 z-30 min-h-[70vh] bg-[#f1f3f6] w-[80vw] text-black border-2">
+        <div className="mt-16 z-30 min-h-[65vh] bg-[#f1f3f6] w-[80vw] text-black border-2">
           <BagCheckout
             handleNext={handleNext}
-            cartItemsSize={cartItemsSize}
             totalCartValue={totalCartValue}
             cartItems={cartItems}
+            setCartItems={setCartItems}
             setTotalCartValue={setTotalCartValue}
           />
         </div>
@@ -138,7 +140,7 @@ const Checkout = () => {
         </div>
       )}
 
-      <div className="flex gap-4 mt-3 w-[80vw] flex-wrap">
+      <div className="flex gap-4 mt-5 w-[80vw] flex-wrap">
         {PAYMENT_BRANDS.map((brand, index) => {
           return (
             <div className="h-10 w-16 " key={brand + index}>
