@@ -6,7 +6,7 @@ import {
 import { Step, Stepper, Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { backendConfig } from "../../config";
 import ProtectedRoute from "../../miscellaneousPages/ProtectedRoute";
 import { PAYMENT_BRANDS } from "../../utility/brands";
@@ -15,6 +15,7 @@ import {
   generateCartItemsFrom,
   getTotalCartValue,
 } from "../../utility/CartMethods";
+import { clearUserDetails } from "../redux/userSlice";
 import AddressCheckout from "./AddressCheckout";
 import BagCheckout from "./BagCheckout/BagCheckout";
 import PaymentCheckout from "./PaymentCheckout";
@@ -25,6 +26,8 @@ const Checkout = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [totalCartValue, setTotalCartValue] = useState(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,7 +43,8 @@ const Checkout = () => {
             setTotalCartValue(getTotalCartValue(formattedCartItems));
           })
           .catch((e) => {
-            toast.error("Something went wrong");
+            dispatch(clearUserDetails());
+            toast.error("Please login again to proceed");
           });
       } catch (error) {
         toast.error(error.message);
@@ -48,7 +52,7 @@ const Checkout = () => {
     };
 
     fetchProducts();
-  }, [userInfo.token]);
+  }, [userInfo.token, dispatch]);
 
   if (!isLoggedIn) {
     return <ProtectedRoute />;
@@ -56,7 +60,6 @@ const Checkout = () => {
 
   const handleNext = () => setActiveStep((cur) => cur + 1);
 
-  console.log("re-rendering")
 
   return (
     <div className="w-full relative px-24 py-4 mt-5 flex flex-col items-center">

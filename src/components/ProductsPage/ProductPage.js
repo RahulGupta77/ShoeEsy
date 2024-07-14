@@ -9,12 +9,14 @@ import {
   sidebarFilterFunction,
   sortByFilter,
 } from "../../utility/ProductPageMethods";
+
 import { clearAll } from "../redux/filterSlice";
 import PaginationBtns from "./PaginationBtns";
 import ProductCards from "./ProductCards/ProductCards";
 import ProductPageFilterPills from "./ProductPageFilterPills";
 import SelectComponent from "./SelectComponent";
 import Sidebar from "./Sidebar/Sidebar";
+import { clearUserDetails } from "../redux/userSlice";
 
 const ProductPage = () => {
   const dispatch = useDispatch();
@@ -88,33 +90,37 @@ const ProductPage = () => {
   useEffect(() => {
     if (isLoggedIn) {
       const fetchCartItems = async () => {
-        const cartData = await fetchCart(userInfo.token);
-        setCartItems(cartData);
+        try {
+          const cartData = await fetchCart(userInfo.token);
+          if (!Array.isArray(cartData) && !cartData.success) throw Error;
+          setCartItems(cartData);
+        } catch (error) {
+          dispatch(clearUserDetails())
+          toast.error("Please login again to proceed");
+        }
       };
 
       fetchCartItems();
     }
-  }, [cartItemsSize, isLoggedIn, userInfo]);
+  }, [cartItemsSize, isLoggedIn, userInfo, dispatch]);
 
   useEffect(() => {
-
     if (
       !searchQueryText.trim() &&
       tempFilteredProducts &&
       tempFilteredProducts.length
     ) {
-      
       setTempFilteredProducts([]);
 
-       sidebarFilterFunction(
-         categoryFilter,
-         brandFilter,
-         currentRating,
-         finalPrice,
-         products,
-         setFilteredProducts,
-         setSideBarFilterProducts
-       );
+      sidebarFilterFunction(
+        categoryFilter,
+        brandFilter,
+        currentRating,
+        finalPrice,
+        products,
+        setFilteredProducts,
+        setSideBarFilterProducts
+      );
       return;
     }
 

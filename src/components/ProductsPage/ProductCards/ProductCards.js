@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { isItemInCart } from "../../../utility/CartMethods";
 import { addToBag } from "../../../utility/ProductPageMethods";
 import { updateCartItemsSize } from "../../redux/userSlice";
+import { shortenBrandNameString } from "../../../utility/generalMethods";
 
 const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
   const dispatch = useDispatch();
@@ -19,13 +20,6 @@ const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
   const [hoverAddToCart, setHoverAddToCart] = useState(false);
   const isItemPresent = isItemInCart(cartItems, product["_id"]);
 
-  const shortenBrandNameString = (str) => {
-    if (str.length > 22) {
-      return str.slice(0, 22) + "...";
-    } else {
-      return str;
-    }
-  };
 
   const handleAddToBag = async (productId, token) => {
     if (!isLoggedIn) {
@@ -39,7 +33,6 @@ const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
 
     const cartItemsSize = await addToBag(productId, token);
     toast.success("Product successfully added");
-    console.log(cartItemsSize);
     dispatch(updateCartItemsSize(cartItemsSize));
   };
 

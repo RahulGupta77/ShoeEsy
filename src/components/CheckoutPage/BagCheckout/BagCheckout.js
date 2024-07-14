@@ -12,8 +12,6 @@ const BagCheckout = ({
 }) => {
   const { cartItemsSize } = useSelector((store) => store.userDetails);
 
-  console.log(cartItemsSize);
-
   return (
     <div className="mt-5 mx-5 ">
       {Boolean(cartItemsSize) ? (

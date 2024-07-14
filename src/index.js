@@ -18,6 +18,7 @@ import Register from "./components/Register";
 import "./index.css";
 import ErrorPage from "./miscellaneousPages/ErrorPage";
 import reportWebVitals from "./reportWebVitals";
+import { Toaster } from "react-hot-toast";
 
 let persistor = persistStore(store);
 
@@ -73,6 +74,16 @@ root.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>
       <RouterProvider router={appRouter} />
+      <Toaster
+        toastOptions={{
+          className: "font-semibold tracking-wide",
+          duration: 5000,
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+        }}
+      />
     </PersistGate>
   </Provider>
 );
