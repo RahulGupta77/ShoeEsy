@@ -29,6 +29,17 @@ const userSlice = createSlice({
     updateSearchQueryText: (state, action) => {
       state.searchQueryText = action.payload;
     },
+
+    clearUserDetails: (state) => {
+      state.isLoggedIn = false;
+      state.userInfo = {
+        username: "",
+        token: "",
+        balance: 0,
+      };
+      state.cartItemsSize = 0;
+      state.searchQueryText = "";
+    },
   },
 });
 
@@ -37,5 +48,6 @@ export const {
   updateUserDetails,
   updateCartItemsSize,
   updateSearchQueryText,
+  clearUserDetails,
 } = userSlice.actions;
 export default userSlice.reducer;

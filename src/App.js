@@ -1,4 +1,3 @@
-import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router";
 import Footer from "./components/Footer";
 import Header from "./components/Navbar/Header";
@@ -17,16 +16,6 @@ function App() {
       {onlineStatus && <Outlet />}
       <OfflinePage onlineStatus={onlineStatus} />
       <Footer />
-      <Toaster
-        toastOptions={{
-          className: "font-semibold tracking-wide",
-          duration: 5000,
-          style: {
-            background: "#333",
-            color: "#fff",
-          },
-        }}
-      />
     </div>
   );
 }
