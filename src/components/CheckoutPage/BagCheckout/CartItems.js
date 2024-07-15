@@ -14,6 +14,7 @@ import {
 } from "../../../utility/CartMethods";
 import { updateCartItemsSize } from "../../redux/userSlice";
 import ButtonCheckout from "../ButtonCheckout";
+import { shortenBrandNameString } from "../../../utility/generalMethods";
 
 const CartItems = ({
   handleNext,
@@ -67,7 +68,7 @@ const CartItems = ({
         {Boolean(cartItems.length) ? (
           cartItems.map((cartItem) => (
             <div
-              className="flex gap-x-5 min-h-44 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]"
+              className="flex gap-x-5 h-44 shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]"
               key={cartItem._id + " cart"}
             >
               <div className="h-full w-[25%] bg-gray-200 ">
@@ -83,7 +84,7 @@ const CartItems = ({
                     {cartItem.brand}
                   </p>
                   <p className="text-md font-sans tracking-wide text-[#282c3f]">
-                    {cartItem.name}
+                    {shortenBrandNameString(cartItem.name, 25)}
                   </p>
                   <p className="text-[#94969f] capitalize text-sm ">
                     category: {cartItem.category}

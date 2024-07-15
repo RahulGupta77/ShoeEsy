@@ -144,7 +144,7 @@ const ProductCards = ({ product, isLoggedIn, token, cartItems }) => {
       <div className="mx-3 my-2 flex flex-col">
         <p className="font-bold text-base text-[#282c3f]">{product.brand}</p>
         <p className="text-sm text-[#535766] font-light">
-          {shortenBrandNameString(product.name)}
+          {shortenBrandNameString(product.name, 22)}
         </p>
         <p className="text-sm font-bold text-[#282c3f]">Rs. {product.cost}</p>
       </div>

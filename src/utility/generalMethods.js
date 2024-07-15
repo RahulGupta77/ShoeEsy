@@ -1,6 +1,6 @@
-export  const shortenBrandNameString = (str) => {
-  if (str.length > 22) {
-    return str.slice(0, 22) + "...";
+export  const shortenBrandNameString = (str, desiredLength) => {
+  if (str.length > desiredLength) {
+    return str.slice(0, desiredLength) + "...";
   } else {
     return str;
   }
