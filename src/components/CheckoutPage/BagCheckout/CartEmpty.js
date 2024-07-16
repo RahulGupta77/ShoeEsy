@@ -3,7 +3,7 @@ import Button from '../../Button';
 
 const CartEmpty = () => {
   return (
-    <div className="flex pt-20 items-center flex-col h-full ">
+    <div className="flex pt-20 items-center flex-col  ">
       <div className="h-40 w-36 mb-6">
         <img src="./emptyBag.png" alt="bag-items" className="h-full w-full" />
       </div>
