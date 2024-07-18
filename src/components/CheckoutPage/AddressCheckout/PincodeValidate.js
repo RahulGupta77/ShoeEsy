@@ -29,7 +29,6 @@ const PincodeValidate = () => {
       const data = await response.json();
 
       if (Array.isArray(data[0].PostOffice)) {
-        setResultantCity(data[0].PostOffice[0]);
         if (data[0].PostOffice.length > 1) {
           setResultantCity(data[0].PostOffice[0].Block);
         } else {

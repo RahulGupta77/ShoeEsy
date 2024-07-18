@@ -7,14 +7,106 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const AddAddressBtn = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
+  const [validPincodeChecker, setValidPincodeChecker] = useState(true);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    mobile: "",
+    pincode: "",
+    address: "",
+    locality: "",
+    city: "",
+    state: "",
+  });
+
+  const fetchPincodeDetails = async (name, value) => {
+    try {
+      const response = await fetch(
+        "https://api.postalpincode.in/pincode/" + value
+      );
+      const data = await response.json();
+      if (Array.isArray(data[0].PostOffice)) {
+        if (data[0].PostOffice.length > 1) {
+          setFormData((prevData) => ({
+            ...prevData,
+            city: data[0].PostOffice[0].Block,
+            state: data[0].PostOffice[0].State,
+          }));
+        } else {
+          setFormData((prevData) => ({
+            ...prevData,
+            city: data[0].PostOffice[0].Name,
+            state: data[0].PostOffice[0].State,
+          }));
+        }
+      } else {
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+        setValidPincodeChecker(false);
+      }
+    } catch (error) {
+      setValidPincodeChecker(true);
+      toast.error(error.message);
+      return null;
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "pincode") {
+      if (value.length > 6) return;
+
+      setValidPincodeChecker(true);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+
+      setFormData((prevData) => ({
+        ...prevData,
+        city: "",
+        state: "",
+      }));
+
+      if (value.length === 6) fetchPincodeDetails(name, value);
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const addressSubmitHandler = () => {
+    console.log(formData);
+    setFormData({
+      name: "",
+      mobile: "",
+      pincode: "",
+      address: "",
+      locality: "",
+      city: "",
+      state: "",
+    });
+  };
+
   return (
     <>
-      <Button onClick={handleOpen} className="flex justify-center items-center">
+      <Button
+        onClick={handleOpen}
+        className="flex justify-center items-center"
+        color="pink"
+      >
         <div className="h-5 w-5 mr-1">
           <svg
             role="img"
@@ -46,8 +138,21 @@ const AddAddressBtn = () => {
                   Contact Details
                 </Typography>
                 <div className="flex flex-col gap-y-3">
-                  <Input label="Name*" size="lg" />
-                  <Input type="number" label="Mobile No*" size="lg" />
+                  <Input
+                    label="Name*"
+                    size="lg"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                  <Input
+                    type="number"
+                    label="Mobile No*"
+                    size="lg"
+                    name="mobile"
+                    value={formData.mobile}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
               <div className="mt-5">
@@ -59,8 +164,15 @@ const AddAddressBtn = () => {
                 </Typography>
                 <div className="flex flex-col gap-y-3">
                   <div>
-                    <Input type="number" label="6 digit Pincode*" size="lg" />
-                    {null && (
+                    <Input
+                      type="number"
+                      label="6 digit Pincode*"
+                      size="lg"
+                      name="pincode"
+                      value={formData.pincode}
+                      onChange={handleChange}
+                    />
+                    {!validPincodeChecker && (
                       <Typography
                         variant="small"
                         color="red"
@@ -85,16 +197,47 @@ const AddAddressBtn = () => {
                   <Input
                     label="Address (House No, Building, Area)*"
                     size="lg"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
                   />
-                  <Input label="Locality / Town*" size="lg" />
-                  <Input disabled label="City / District*" size="lg" />
-                  <Input disabled label="State*" size="lg" />
+                  <Input
+                    label="Locality / Town*"
+                    size="lg"
+                    name="locality"
+                    value={formData.locality}
+                    onChange={handleChange}
+                  />
+                  <Input
+                    disabled
+                    label="City / District*"
+                    size="lg"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                  />
+                  <Input
+                    disabled
+                    label="State*"
+                    size="lg"
+                    name="state"
+                    value={formData.state}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" onClick={handleOpen} fullWidth>
+            <Button
+              variant="gradient"
+              color="pink"
+              onClick={() => {
+                addressSubmitHandler();
+                handleOpen();
+              }}
+              fullWidth
+            >
               Add Address
             </Button>
           </CardFooter>

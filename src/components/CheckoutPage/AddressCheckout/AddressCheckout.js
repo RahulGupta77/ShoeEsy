@@ -58,7 +58,9 @@ const AddressCheckout = ({ handleNext }) => {
       ) : addresses ? (
         <SelectAddress handleNext={handleNext} />
       ) : (
-        <NoAddress />
+        <div className="mt-10">
+          <NoAddress />
+        </div>
       )}
     </div>
   );

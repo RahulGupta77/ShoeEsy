@@ -3,7 +3,7 @@ import ButtonCheckout from "../ButtonCheckout";
 
 const SelectAddress = ({ handleNext }) => {
   return (
-    <div className="w-full bg-red-100 h-full">
+    <div className="w-full  h-full">
       <div className="w-fit px-4">
         <ButtonCheckout text="Continue" callBackFunction={handleNext} />
       </div>
