@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { persistStore } from "redux-persist";
@@ -18,7 +19,6 @@ import Register from "./components/Register";
 import "./index.css";
 import ErrorPage from "./miscellaneousPages/ErrorPage";
 import reportWebVitals from "./reportWebVitals";
-import { Toaster } from "react-hot-toast";
 
 let persistor = persistStore(store);
 

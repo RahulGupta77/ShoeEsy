@@ -63,6 +63,7 @@ const Header = () => {
       }
     };
 
+
     fetchCartItems();
     dispatch(updateSearchQueryText(""));
     dispatch(clearCacheResults()); //<-- clearing the search suggestion cache when header is component is rendered for the first time as token and dispatch would be constant

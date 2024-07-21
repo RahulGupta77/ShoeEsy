@@ -16,7 +16,7 @@ import {
   getTotalCartValue,
 } from "../../utility/CartMethods";
 import { clearUserDetails } from "../redux/userSlice";
-import AddressCheckout from "./AddressCheckout";
+import AddressCheckout from "./AddressCheckout/AddressCheckout";
 import BagCheckout from "./BagCheckout/BagCheckout";
 import PaymentCheckout from "./PaymentCheckout";
 
@@ -132,13 +132,13 @@ const Checkout = () => {
       )}
 
       {activeStep === 1 && (
-        <div className="mt-16 z-30 min-h-[70vh] bg-[#f1f3f6]  w-[70vw] text-black border-2">
+        <div className="mt-16 z-30 min-h-[65vh] bg-[#f1f3f6]  w-[80vw] text-black border-2">
           <AddressCheckout handleNext={handleNext} />
         </div>
       )}
 
       {activeStep === 2 && (
-        <div className="mt-16 z-30 min-h-[70vh] bg-[#f1f3f6]  w-[70vw] text-black border-2">
+        <div className="mt-16 z-30 min-h-[65vh] bg-[#f1f3f6]  w-[80vw] text-black border-2">
           <PaymentCheckout />
         </div>
       )}
