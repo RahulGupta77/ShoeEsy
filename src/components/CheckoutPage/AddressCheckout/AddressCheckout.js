@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { backendConfig } from "../../../config";
+import AddressSkeleton from "../../../Skeleton/AddressSkeleton";
+import { updateSelectedAddressId } from "../../redux/userSlice";
 import NoAddress from "./NoAddress";
 import PincodeValidate from "./PincodeValidate";
 import SelectAddress from "./SelectAddress";
-import AddressSkeleton from "../../../Skeleton/AddressSkeleton";
 
 const AddressCheckout = ({ handleNext }) => {
+  const dispatch = useDispatch();
   const { token } = useSelector((store) => store.userDetails.userInfo);
   const [addresses, setAddresses] = useState(undefined);
 
@@ -24,11 +26,14 @@ const AddressCheckout = ({ handleNext }) => {
         );
 
         const data = await response.json();
+        if (data.success === false) throw new Error(data.message);
+
+        setAddresses(data);
 
         if (data.length > 0) {
-          setAddresses(data);
+          dispatch(updateSelectedAddressId(data[0]._id));
         } else {
-          setAddresses(null);
+          dispatch(updateSelectedAddressId(""));
         }
       } catch (error) {
         toast.error(error.message);
@@ -36,7 +41,9 @@ const AddressCheckout = ({ handleNext }) => {
     };
 
     fetchUserAddress();
-  }, [token]);
+  }, [token, dispatch]);
+
+  console.log(addresses);
 
   return (
     <div className="mt-5 mx-5 ">
@@ -55,11 +62,15 @@ const AddressCheckout = ({ handleNext }) => {
             </div>
           ))}
         </div>
-      ) : addresses ? (
-        <SelectAddress handleNext={handleNext} />
+      ) : Boolean(addresses.length) ? (
+        <SelectAddress
+          handleNext={handleNext}
+          addresses={addresses}
+          setAddresses={setAddresses}
+        />
       ) : (
         <div className="mt-10">
-          <NoAddress />
+          <NoAddress setAddresses={setAddresses} />
         </div>
       )}
     </div>

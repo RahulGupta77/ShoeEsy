@@ -11,6 +11,7 @@ const userSlice = createSlice({
     },
     cartItemsSize: 0,
     searchQueryText: "",
+    selectedAddressId: "",
   },
   reducers: {
     toggleLoginStatus: (state, actions) => {
@@ -28,6 +29,10 @@ const userSlice = createSlice({
 
     updateSearchQueryText: (state, action) => {
       state.searchQueryText = action.payload;
+    },
+
+    updateSelectedAddressId: (state, action)=> {
+      state.selectedAddressId = action.payload;
     },
 
     clearUserDetails: (state) => {
@@ -49,5 +54,6 @@ export const {
   updateCartItemsSize,
   updateSearchQueryText,
   clearUserDetails,
+  updateSelectedAddressId,
 } = userSlice.actions;
 export default userSlice.reducer;

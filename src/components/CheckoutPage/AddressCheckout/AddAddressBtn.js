@@ -9,8 +9,11 @@ import {
 } from "@material-tailwind/react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { backendConfig } from "../../../config";
 
-const AddAddressBtn = () => {
+const AddAddressBtn = ({ setAddresses }) => {
+  const { token } = useSelector((store) => store.userDetails.userInfo);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
   const [validPincodeChecker, setValidPincodeChecker] = useState(true);
@@ -62,6 +65,10 @@ const AddAddressBtn = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "mobile" && value.length > 10) {
+      return;
+    }
+
     if (name === "pincode") {
       if (value.length > 6) return;
 
@@ -87,17 +94,46 @@ const AddAddressBtn = () => {
     }
   };
 
-  const addressSubmitHandler = () => {
-    console.log(formData);
-    setFormData({
-      name: "",
-      mobile: "",
-      pincode: "",
-      address: "",
-      locality: "",
-      city: "",
-      state: "",
-    });
+  const addressSubmitHandler = async () => {
+    // meaning pincode was not correct
+    if (!validPincodeChecker) return;
+
+    if (formData.mobile.length !== 10) {
+      handleOpen();
+      toast.error("10 digits mobile number is required!!");
+      return;
+    }
+
+    if (
+      formData.name &&
+      formData.mobile &&
+      formData.mobile.length === 10 &&
+      formData.pincode &&
+      formData.address &&
+      formData.locality &&
+      formData.city &&
+      formData.state
+    ) {
+      try {
+        const addAddressApiUrl = backendConfig.endpoint + "/user/addresses";
+        const response = await fetch(addAddressApiUrl, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if (data.success === false) throw new Error(data.message);
+        toast.success("Added New Address Successfully!!");
+        setAddresses(data);
+        handleOpen();
+      } catch (error) {
+        handleOpen();
+        toast.error(error.message);
+      }
+    }
   };
 
   return (
@@ -139,19 +175,21 @@ const AddAddressBtn = () => {
                 </Typography>
                 <div className="flex flex-col gap-y-3">
                   <Input
-                    label="Name*"
+                    label="Name"
                     size="lg"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
+                    required
                   />
                   <Input
                     type="number"
-                    label="Mobile No*"
+                    label="Mobile No"
                     size="lg"
                     name="mobile"
                     value={formData.mobile}
                     onChange={handleChange}
+                    required
                   />
                 </div>
               </div>
@@ -166,11 +204,12 @@ const AddAddressBtn = () => {
                   <div>
                     <Input
                       type="number"
-                      label="6 digit Pincode*"
+                      label="6 digit Pincode"
                       size="lg"
                       name="pincode"
                       value={formData.pincode}
                       onChange={handleChange}
+                      required
                     />
                     {!validPincodeChecker && (
                       <Typography
@@ -195,32 +234,36 @@ const AddAddressBtn = () => {
                     )}
                   </div>
                   <Input
-                    label="Address (House No, Building, Area)*"
+                    label="Address (House No, Building, Area)"
                     size="lg"
                     name="address"
                     value={formData.address}
                     onChange={handleChange}
+                    required
                   />
                   <Input
-                    label="Locality / Town*"
+                    label="Locality / Town"
                     size="lg"
                     name="locality"
                     value={formData.locality}
                     onChange={handleChange}
+                    required
                   />
                   <Input
                     disabled
-                    label="City / District*"
+                    label="City / District"
                     size="lg"
                     name="city"
+                    className="font-semibold text-blue-gray-700"
                     value={formData.city}
                     onChange={handleChange}
                   />
                   <Input
                     disabled
-                    label="State*"
+                    label="State"
                     size="lg"
                     name="state"
+                    className="font-semibold  text-blue-gray-700"
                     value={formData.state}
                     onChange={handleChange}
                   />
@@ -234,7 +277,6 @@ const AddAddressBtn = () => {
               color="pink"
               onClick={() => {
                 addressSubmitHandler();
-                handleOpen();
               }}
               fullWidth
             >

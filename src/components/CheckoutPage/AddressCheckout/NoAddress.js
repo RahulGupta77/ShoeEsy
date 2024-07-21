@@ -1,7 +1,7 @@
 import React from "react";
 import AddAddressBtn from "./AddAddressBtn";
 
-const NoAddress = () => {
+const NoAddress = ({ setAddresses }) => {
   return (
     <div className="flex pt-8  justify-center flex-col items-center gap-y-9">
       <div className="h-24 w-24 text-blue-gray-800">
@@ -20,7 +20,7 @@ const NoAddress = () => {
       <h3 className="text-[#4e4e52] font-semibold text-3xl mt-2">
         No Address Found!!
       </h3>
-      <AddAddressBtn />
+      <AddAddressBtn setAddresses={setAddresses} />
     </div>
   );
 };
